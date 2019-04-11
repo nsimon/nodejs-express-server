@@ -1,0 +1,19 @@
+<html>
+
+<head>
+    <title>Movies</title>
+</head>
+
+<body>
+    <pre><h2>GET Movies</h2></pre>
+    <pre><h2>Director: <%= director %></h2></pre>
+    <ul>
+        <pre>
+        <% movies.forEach ((movie) => {%>
+        <li><%= movie.name %></li>
+        <% })%>
+        </pre>
+    </ul>
+</body>
+
+</html>

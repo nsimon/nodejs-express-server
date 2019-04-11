@@ -1,0 +1,13 @@
+{
+    "name": "nodejs-express-server",
+    "description": "Demo of Nodejs and Express REST API Server",
+    "version": "0.0.1",
+    "private": true,
+    "main": "server.js",
+    "dependencies": {
+        "async": "^2.6.2",
+        "ejs": "^2.6.1",
+        "express": "^4.16.4",
+        "node-datetime": "^2.1.2"
+    }
+}

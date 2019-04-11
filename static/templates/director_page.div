@@ -1,0 +1,17 @@
+<div id="director_page">
+  {{ #movies }}
+  <p>There are {{ movies.length }} movies for this director</p>
+  <div id="movies">
+    <div class="movie">
+      <div class="movie_holder">
+        <img style="width: 250px; height: 250px; background-color: #fbb" src="{{ url }}" border="0"/>
+      </div>
+      <div class="movie_desc"><p>{{ desc }}</p></div>
+    </div>
+  </div>
+  <div style="clear: left"></div>
+  {{ /movies }}
+  {{ ^movies }}
+  <p>This director does not have any movies<p>
+  {{ /movies }}
+</div>

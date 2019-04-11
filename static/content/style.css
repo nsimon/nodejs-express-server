@@ -1,0 +1,45 @@
+/* style.css */
+
+body
+  {
+  font-size: 18px;
+  font-family: sans-serif;
+  font-weight: bold;
+  }
+
+#director_list p.page_heading
+  {
+  padding-left: 40px;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  }
+
+#director_list #directors
+  {
+  padding-left: 65px;
+  }
+
+#director_list .director
+  {
+  padding-bottom: 10px;
+  }
+
+#director_page p.page_heading
+  {
+  padding-left: 40px;
+  padding-top: 20px;
+  padding-bottom: 40px;
+  }
+
+#director_page div#movies div.movie
+  {
+  width: 255px;
+  float: left;
+  padding-left: 40px;
+  }
+
+#director_page div#movies div.movie div.movie_desc
+  {
+  padding-bottom: 60px;
+  }
+

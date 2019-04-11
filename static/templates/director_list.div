@@ -1,0 +1,11 @@
+<div id="director_list">
+  <p>There are {{ directors.length }} directors</p>
+  <ul id="directors">
+    {{ #directors }}
+    <li class="director"><a href="http://localhost:8080/pages/director/{{ name }}">{{ name }}</a></li>
+    {{ /directors }}
+    {{ ^directors }}
+    <li>There are currently no directors</li>
+    {{ /directors }}
+  </ul>
+</div>
