@@ -3,24 +3,23 @@
 
 // TODO
 //
-// Add support for these URLs:
-//   /pages/:page_name
-//   /templates/:template_name
-//   /content/:filename
-//   v1.get ("/templates/:template_name", function (req, res)
-//       {
-//       serve_static_file ("templates/" + req.params.template_name, res);
-//       }
+// Add support for browser URLs:
+//   . /pages/:page_name
+//   . /templates/:template_name
+//   . /content/:filename
 //
-// directors.json: add, change, delete
+// directors.json:
+//   . add, change, delete
 //
-// movies.json: add, change, delete
+// movies.json:
+//   . add, change, delete
 //
-// ejs: only renders on server
+// ejs:
+//   . only renders on server
 //
 // Build-out each route:
-//   For .json/.xml cURL    requests: render .json or .xml
-//   For .json/.xml browser requests: render template
+//   . For .json/.xml cURL    requests: render .json or .xml
+//   . For .json/.xml browser requests: render template
 //
 // Add images
 //
@@ -188,6 +187,16 @@ v1.get ([ "/pages/:page_name",
             }
         });
     });
+
+//v1.get ("/templates/:template_name", (request, response) =>
+//    {
+//    serve_static_file ("templates/" + request.params.template_name, response);
+//    });
+
+//v1.get ("/content/:filename", (request, response) =>
+//    {
+//    serve_static_file ("content/" + request.params.filename, response);
+//    });
 
 v1.get ([ "/directors.json",
           "/directors.xml" ], (request, response) =>
