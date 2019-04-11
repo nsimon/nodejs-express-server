@@ -145,6 +145,7 @@ v1.get ([ "/pages/:page_name",
     // URLS:    http://localhost:8080
     //          http://localhost:8080/pages/home
     //          http://localhost:8080/pages/director/Quentin
+    //          http://localhost:8080/pages/director/Quentin/Pulp_Fiction
     // RETURNS: html
     // ERROR:   n/a
     // TODO:    add "movie" support
@@ -169,27 +170,19 @@ v1.get ([ "/pages/:page_name",
         {
         if (err)
             {
-            var rest_rc = 500;
-
-            // create error message
-            var message = "Internal server error";
-
             // return json error
+            var rest_rc = 500;
+            var message = "Internal server error";
             response.writeHead (rest_rc, { "Content-Type" : "application/json" });
             response.end (JSON.stringify ({ error: rest_rc, message: message }) + "\n");
             }
         else
             {
+            // return html content
             var rest_rc = 200;
-
-            // convert to utf8
             contents = contents.toString ("utf8");
-
-            // replace page vars
             contents = contents.replace ("{{ PAGE_NAME }}",  page_name);
             contents = contents.replace ("{{ PAGE_TITLE }}", page_name);
-
-            // return html content
             response.writeHead (rest_rc, { "Content-Type": "text/html" });
             response.end (contents);
             }
@@ -263,7 +256,8 @@ v1.get ([ "/directors/:director.json",
     response.end (JSON.stringify (jsonOut));
     });
 
-v1.get ("/directors/:director/movies.(json|xml)$", (request, response) =>
+v1.get ([ "/directors/:director/movies.json",
+          "/directors/:director/movies.xml" ], (request, response) =>
     {
     // DESC:  get all movies for director (with optional filters)
     // URL:   http://localhost:8080/v1/directors/Peele/movies.json
@@ -302,7 +296,8 @@ v1.get ("/directors/:director/movies.(json|xml)$", (request, response) =>
     response.render ("movies.ejs", { director: director, movies: movies });
     });
 
-v1.get ("/directors/:director/movie/:movie.(json|xml)$", (request, response) =>
+v1.get ([ "/directors/:director/movie/:movie.json",
+          "/directors/:director/movie/:movie.xml" ], (request, response) =>
     {
     // DESC:  get specified movie for director
     // URL:   http://localhost:8080/v1/directors/Peele/movie/Get_Out_2018.json
