@@ -273,7 +273,7 @@ v1.get ([ "/directors/:director.json",
     // TODO:    get data via fs.readFile()
 
     // Create jsonOut
-    var jsonOut = { "error": null, "data": { "director_data": { "director": "Quentin", "movies": [{ "filename": "Reservoir_Dogs.json", "poster_url": "Reservoir_Dogs.jpg", "desc": "Reservoir Dogs" }, { "filename": "Pulp_Fiction.json", "poster_url": "Pulp_Fiction.jpg", "desc": "Pulp Fiction" }]}}};
+    var jsonOut = { "error": null, "data": { "director_data": { "director": "Quentin", "movies": [{ "filename": "Reservoir_Dogs_1992.json", "poster_url": "Reservoir_Dogs_1992.jpg", "desc": "Reservoir Dogs" }, { "filename": "Pulp_Fiction_1994", "poster_url": "Pulp_Fiction_1994.jpg", "desc": "Pulp Fiction" }]}}};
 
     response.setHeader ("Content-Type", "application/json");
 
@@ -338,7 +338,7 @@ v1.get ([ "/directors/:director/movie/:movie.json",
     console.log ("movie ...... " + movie);
     console.log ("");
 
-    var jsonOut = { "error": null, "data": { "director": director, "filename": "Pulp_Fiction.json", "poster_url": "Pulp_Fiction.jpg", "desc": "Pulp Fiction" }};
+    var jsonOut = { "error": null, "data": { "director": director, "filename": "Pulp_Fiction_1994.json", "poster_url": "Pulp_Fiction_1994.jpg", "desc": "Pulp Fiction" }};
 
     response.setHeader ("Content-Type", "application/json");
 

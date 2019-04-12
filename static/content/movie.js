@@ -20,7 +20,7 @@ $(function ()
             tmpl = d;
             });
 
-        // ex: /v1/directors/Quentin/movie/Pulp_Fiction.json
+        // ex: /v1/directors/Quentin/movie/Pulp_Fiction_1994.json
         $.getJSON ("/v1/directors/" + director_name + "/movie/" + movie_name + ".json", function (d)
             {
             var movie_d = massage_director (d);
@@ -45,11 +45,11 @@ function massage_director (d)
         return d;
         }
 
-    var filename  = d.data.filename;  // ex: Pulp_Fiction.json
-    var desc      = d.data.desc;      // ex: Pulp Fiction
+    var filename  = d.data.filename;  // ex: Pulp_Fiction_1994.json
+    var desc      = d.data.desc;      // ex: Pulp Fiction_1994
     var director  = d.data.director;  // ex: Scorsese
 
-    // ex: /directors/Scorsese/Pulp_Fiction.jpg
+    // ex: /directors/Scorsese/Pulp_Fiction_1994.jpg
     var poster_url = "/directors/" + director + "/" + d.data.poster_url;
 
     var obj = { "director": director, "poster_url": poster_url, "desc": filename };

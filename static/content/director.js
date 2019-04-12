@@ -66,10 +66,10 @@ function massage_director (d)
         // ex: Pulp_Fiction.json
         var movie_foldername = af.movies [i].filename;
 
-        // path to jpg. ex: /directors/Quentin/Pulp_Fiction.jpg
+        // path to jpg. ex: /directors/Quentin/Pulp_Fiction_1994.jpg
         var poster_url = "/directors/" + director + "/" + af.movies [i].poster_url;
 
-        // path to url. ex: /director/Quentin/Pulp_Fiction (slice remove .json extension)
+        // path to url. ex: /director/Quentin/Pulp_Fiction_1994 (slice remove .json extension)
         var movie_url = "/pages/director/" + director + "/" + movie_foldername.slice (0, -5);
 
         obj.movies.push ({ poster_url: poster_url, movie_url: movie_url, desc: af.movies [i].filename });
