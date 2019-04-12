@@ -3,8 +3,12 @@
 
 // TODO
 //
-// Add support for browser URLs:
-//   . /pages/:page_name
+// Build-out the 3 page types:
+//   . /pages/home
+//   . /pages/director/:director
+//   . /pages/director/:director/:movie
+//
+// Add support for remaining browser URLs:
 //   . /templates/:template_name
 //   . /content/:filename
 //
@@ -21,8 +25,6 @@
 //   . For .json/.xml cURL    requests: render .json or .xml
 //   . For .json/.xml browser requests: render template
 //
-// Add images
-//
 // Add this route to handle invalid urls:
 //   v1.get ("*", four_oh_four);
 //   function four_oh_four (request, response)
@@ -38,6 +40,7 @@
 //   . ejs templates
 //   . Log to file
 //   . CLI script that runs/tests all REST commands
+//   . images
 
 // Supported HTTP status return codes:
 //   . 200 OK           Request successful
