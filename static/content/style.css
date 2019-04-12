@@ -43,3 +43,22 @@ body
   padding-bottom: 20px;
   }
 
+#movie_page p.page_heading
+  {
+  padding-left: 40px;
+  padding-top: 20px;
+  padding-bottom: 40px;
+  }
+
+#movie_page div.movie
+  {
+  width: 255px;
+  float: left;
+  padding-left: 40px;
+  }
+
+#movie_page div.movie div.movie_desc
+  {
+  padding-bottom: 20px;
+  }
+
