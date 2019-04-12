@@ -31,15 +31,15 @@ body
   padding-bottom: 40px;
   }
 
-#director_page div#movies div.movie
+#director_page div.movie
   {
   width: 255px;
   float: left;
   padding-left: 40px;
   }
 
-#director_page div#movies div.movie div.movie_desc
+#director_page div.movie div.movie_desc
   {
-  padding-bottom: 60px;
+  padding-bottom: 20px;
   }
 
