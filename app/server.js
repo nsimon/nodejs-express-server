@@ -150,10 +150,6 @@ v1.get ([ "/pages/:page_name",
     // TODO:    add "movie" support
     // TODO:    error handling (e.g. /pages/director)
 
-    // ex: home
-    var page_name = request.params.page_name;
-    console.log ("page_name ... " + page_name);
-
     // ex: Quentin (optional)
     var director = request.params.director;
     console.log ("director .... " + director);
@@ -161,6 +157,10 @@ v1.get ([ "/pages/:page_name",
     // ex: Pulp_Fiction (optional)
     var movie = request.params.movie;
     console.log ("movie ....... " + movie);
+
+    // ex: home
+    var page_name = request.params.page_name;
+    console.log ("page_name ... " + page_name);
 
     console.log ("");
 
@@ -180,8 +180,23 @@ v1.get ([ "/pages/:page_name",
             // return html content
             var rest_rc = 200;
             contents = contents.toString ("utf8");
-            contents = contents.replace ("{{ PAGE_NAME }}",  page_name);
-            contents = contents.replace ("{{ PAGE_TITLE }}", page_name);
+
+            if (typeof movie !== "undefined")
+                {
+                console.log ("We have a movie!");
+                }
+
+            // if movie was specified, use "movie"
+            // else use :page name (either "home" or "director")
+            var page_type = (typeof movie !== "undefined") ? "movie" : page_name;
+
+            // resolves to page <title>
+            contents = contents.replace ("{{ PAGE_NAME }}",  page_type);
+
+            // resolves to a client-js script specified in the web page
+            // ex: home.js, director.js, or movie.js
+            contents = contents.replace ("{{ PAGE_TITLE }}", page_type);
+
             response.writeHead (rest_rc, { "Content-Type": "text/html" });
             response.end (contents);
             }
@@ -258,7 +273,7 @@ v1.get ([ "/directors/:director.json",
     // TODO:    get data via fs.readFile()
 
     // Create jsonOut
-    var jsonOut = { "error": null, "data": { "director_data": { "director_name": "Quentin", "movies": [{ "filename": "Reservoir_Dogs.json", "desc": "Reservoir Dogs" }, { "filename": "Pulp_Fiction.json ", "desc": "Pulp Fiction" }]}}};
+    var jsonOut = { "error": null, "data": { "director_data": { "director": "Quentin", "movies": [{ "filename": "Reservoir_Dogs.json", "poster_url": "Reservoir_Dogs.jpg", "desc": "Reservoir Dogs" }, { "filename": "Pulp_Fiction.json", "poster_url": "Pulp_Fiction.jpg", "desc": "Pulp Fiction" }]}}};
 
     response.setHeader ("Content-Type", "application/json");
 
@@ -323,7 +338,7 @@ v1.get ([ "/directors/:director/movie/:movie.json",
     console.log ("movie ...... " + movie);
     console.log ("");
 
-    var jsonOut = { "error": null, "data": { "filename": "Pulp_Fiction.json", "desc": "Pulp Fiction" }};
+    var jsonOut = { "error": null, "data": { "director": director, "filename": "Pulp_Fiction.json", "poster_url": "Pulp_Fiction.jpg", "desc": "Pulp Fiction" }};
 
     response.setHeader ("Content-Type", "application/json");
 

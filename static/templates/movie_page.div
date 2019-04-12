@@ -1,20 +1,11 @@
 <div id="movie_page">
 
-  <!-- mustache: movies will only have 1 movie -->
-  {{ #movies }}
   <div class="movie">
-    <img style="width: 250px; height: 250px; background-color: #fbb" src="{{ url }}" border="0"/>
-    <div class="movie_desc">
-      <p>{{ desc }}</p>
+    <img style="width: 250px; height: 250px; background-color: #fbb" src="{{ poster_url }}" border="0"/>
+    <div class="movie_desc"><p>{{ desc }}</p>
     </div>
   </div>
 
   <div style="clear: left"></div>
-  {{ /movies }}
-
-  <!-- mustache: movies is empty -->
-  {{ ^movies }}
-  <p>This director does not have any movies<p>
-  {{ /movies }}
 
 </div>

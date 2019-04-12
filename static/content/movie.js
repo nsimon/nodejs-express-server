@@ -8,14 +8,11 @@ $(function ()
         {
         parts = window.location.href.split ("/");
 
-        // need movie_name
-        alert ("parts: " + parts);
-
         // ex: Scorsese
         var director_name = parts [5];
 
         // ex: Pulp_Fiction
-        // var movie_name = parts [?];
+        var movie_name = parts [6];
 
         // Load the HTML template
         $.get ("/templates/movie_page.div", function (d)
@@ -23,12 +20,8 @@ $(function ()
             tmpl = d;
             });
 
-        // ex: /v1/directors/Quentin/movies/Pulp_Fiction.json
-        // $.getJSON ("/v1/directors/" + director_name + "/movies/" + movie_name + ".json", function (d)
-
-        // Retrieve the server data and then initialise the page
-        // ex: /v1/directors/Quentin.json
-        $.getJSON ("/v1/directors/" + director_name + ".json", function (d)
+        // ex: /v1/directors/Quentin/movie/Pulp_Fiction.json
+        $.getJSON ("/v1/directors/" + director_name + "/movie/" + movie_name + ".json", function (d)
             {
             var movie_d = massage_director (d);
 
@@ -52,16 +45,14 @@ function massage_director (d)
         return d;
         }
 
-    var obj = { movies: [] };
+    var filename  = d.data.filename;  // ex: Pulp_Fiction.json
+    var desc      = d.data.desc;      // ex: Pulp Fiction
+    var director  = d.data.director;  // ex: Scorsese
 
-    var af = d.data.director_data;
+    // ex: /directors/Scorsese/Pulp_Fiction.jpg
+    var poster_url = "/directors/" + director + "/" + d.data.poster_url;
 
-    for (var i = 0; i < af.movies.length; i++)
-        {
-        var url = "/directors/" + af.short_name + "/" + af.movies [i].filename;
-
-        obj.movies.push ({ url: url, desc: af.movies [i].filename });
-        }
+    var obj = { "director": director, "poster_url": poster_url, "desc": filename };
 
     return obj;
     }
