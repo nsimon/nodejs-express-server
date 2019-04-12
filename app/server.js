@@ -209,7 +209,7 @@ v1.get ([ "/directors.json",
     // TODO:    get data via fs.readFile()
 
     // Create jsonOut
-    var jsonOut = { error: null, data: { directors: [{ name: "Quentin" }, { name: "Scorsese" }]}};
+    var jsonOut = { "error": null, "data": { "directors": [{ "name": "Quentin" }, { "name": "Scorsese" }]}};
 
     response.setHeader ("Content-Type", "application/json");
 
@@ -258,7 +258,7 @@ v1.get ([ "/directors/:director.json",
     // TODO:    get data via fs.readFile()
 
     // Create jsonOut
-    var jsonOut = { error: null, data: { director_data: { director_name: "Quentin", movies: [{ filename: "Reservoir_Dogs_1992.txt", desc: "Reservoir Dogs" }, { filename: "Pulp_Fiction_1994.txt ", desc: "Pulp Fiction" }]}}};
+    var jsonOut = { "error": null, "data": { "director_data": { "director_name": "Quentin", "movies": [{ "filename": "Reservoir_Dogs.json", "desc": "Reservoir Dogs" }, { "filename": "Pulp_Fiction.json ", "desc": "Pulp Fiction" }]}}};
 
     response.setHeader ("Content-Type", "application/json");
 
@@ -300,26 +300,34 @@ v1.get ([ "/directors/:director/movies.json",
     var director = request.params.director;
 
     // mock data
-    var movies = [{ name: "Get_Out_2018" }, { name: "Us_2019" }];
+    var movies = [{ "name": "Get_Out" }, { "name": "Us" }];
 
-    response.render ("movies.ejs", { director: director, movies: movies });
+    response.render ("movies.ejs", { "director": director, "movies": movies });
     });
 
 v1.get ([ "/directors/:director/movie/:movie.json",
           "/directors/:director/movie/:movie.xml" ], (request, response) =>
     {
-    // DESC:  get specified movie for director
-    // URL:   http://localhost:8080/v1/directors/Peele/movie/Get_Out_2018.json
-    // ERROR: movie does not exist
+    // DESC:    get specified movie for director
+    // URL:     http://localhost:8080/v1/directors/Peele/movie/Get_Out_2018.json
+    // RETURNS: json
+    // ERROR:   movie does not exist
+    // TODO:    fs.read :movie.json
 
     // ex: Peele
     var director = request.params.director;
+    console.log ("director ... " + director);
 
-    // ex: Get_Out_2018
+    // ex: Get_Out
     var movie = request.params.movie;
+    console.log ("movie ...... " + movie);
+    console.log ("");
 
-    // mock data
-    response.render ("movie.ejs", { director: director, movie: movie });
+    var jsonOut = { "error": null, "data": { "filename": "Pulp_Fiction.json", "desc": "Pulp Fiction" }};
+
+    response.setHeader ("Content-Type", "application/json");
+
+    response.end (JSON.stringify (jsonOut));
     });
 
 /******************************************************************************/
