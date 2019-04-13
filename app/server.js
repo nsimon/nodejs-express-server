@@ -228,7 +228,7 @@ v1.get ([ "/directors.json",
     // ERROR  : n/a
 
     // each folder is the name of a director
-    fs.readdir ("../static/directors", function (err, directors)
+    fs.readdir ("../static/directors", (err, directors) =>
         {
         var rc1;
         var jsonOut;
@@ -271,7 +271,7 @@ v1.get ([ "/directors/:director.json",
     console.log ("director ... " + director);
 
     // each folder is the name of a director
-    glob ("../static/directors/" + director + "/*.json", function (err, movies)
+    glob ("../static/directors/" + director + "/*.json", (err, movies) =>
         {
         var rc1;
         var jsonOut;
