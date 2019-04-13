@@ -17,6 +17,7 @@ $(function ()
             });
 
         // Retrieve the server data and then initialise the page
+        // ex: /v1/directors/Quentin.json
         $.getJSON ("/v1/directors/" + director_name + ".json", function (d)
             {
             var movie_d = massage_director (d);
