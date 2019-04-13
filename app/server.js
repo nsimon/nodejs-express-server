@@ -305,10 +305,10 @@ v1.get ([ "/directors/:director.json",
         });
     });
 
-v1.get ([ "/directors/:director/movie/:movie.json",
-          "/directors/:director/movie/:movie.xml" ], (request, response) =>
+v1.get ([ "/directors/:director/movies/:movie.json",
+          "/directors/:director/movies/:movie.xml" ], (request, response) =>
     {
-    // EX:      /directors/Quentin/movie/Pulp_Fiction_1994.json
+    // EX:      /directors/Quentin/movies/Pulp_Fiction_1994.json
     // DESC:    get specified movie for director
     // RETURNS: json
     // ERROR:   movie does not exist

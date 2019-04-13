@@ -20,8 +20,8 @@ $(function ()
             tmpl = d;
             });
 
-        // ex: /v1/directors/Quentin/movie/Pulp_Fiction_1994.json
-        $.getJSON ("/v1/directors/" + director_name + "/movie/" + movie_name + ".json", function (d)
+        // ex: /v1/directors/Quentin/movies/Pulp_Fiction_1994.json
+        $.getJSON ("/v1/directors/" + director_name + "/movies/" + movie_name + ".json", function (d)
             {
             var movie_d = massage_movie (d);
 
