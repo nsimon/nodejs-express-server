@@ -6,41 +6,73 @@
 printf "tester.sh.\n"
 printf "\n"
 
-#######
-# GET #
-#######
+#######################
+# BROWSER ROUTES: GET #
+#######################
 
-#printf "===============================================================================\n"
-#printf "01. curl --silent --request GET --silent --request GET http://localhost:8080/v1\n"
-#printf "===============================================================================\n"
+#printf "curl --silent --request GET http://localhost:8080/pages/home\n"
 #printf "\n"
-#curl --silent --request GET http://localhost:8080/v1
+#curl --silent --request GET http://localhost:8080/pages/home
 #printf "\n"
-#sleep 1
-#
-#printf "========================================================\n"
-#printf "02. curl --silent --request GET http://localhost:8080/v2\n"
-#printf "========================================================\n"
-#printf "\n"
-#curl --silent --request GET http://localhost:8080/v2
-#printf "\n"
-#sleep 1
 
-printf "=======================================================================\n"
-printf "03. curl --silent --request GET http://localhost:8080/v1/directors.json\n"
-printf "=======================================================================\n"
+#printf "curl --silent --request GET http://localhost:8080/pages/director/Quentin\n"
+#printf "\n"
+#curl --silent --request GET http://localhost:8080/pages/director/Quentin
+#printf "\n"
+
+#printf "curl --silent --request GET http://localhost:8080/pages/director/Quentin/Pulp_Fiction_1994\n"
+#printf "\n"
+#curl --silent --request GET http://localhost:8080/pages/director/Quentin/Pulp_Fiction_1994
+#printf "\n"
+
+###################
+# API ROUTES: GET #
+###################
+
+printf "curl --silent --request GET http://localhost:8080/v1/directors.json\n"
 printf "\n"
 curl --silent --request GET http://localhost:8080/v1/directors.json
 printf "\n"
-sleep 1
+printf "\n"
 
-printf "====================================================================================================\n"
-printf "04. curl --silent --request GET http://localhost:8080/v1/directors.json?directors_from=New_York_City\n"
-printf "====================================================================================================\n"
+printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin.json\n"
 printf "\n"
-curl --silent --request GET http://localhost:8080/v1/directors.json?directors_from=New_York_City
+curl --silent --request GET http://localhost:8080/v1/directors/Quentin.json
 printf "\n"
-sleep 1
+printf "\n"
+
+printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies/Pulp_Fiction_1994.json\n"
+printf "\n"
+curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies/Pulp_Fiction_1994.json
+printf "\n"
+printf "\n"
+
+# TODO NEXT:
+#printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json\n"
+#printf "\n"
+#curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json
+#printf "\n"
+#printf "\n"
+
+####################
+# API ROUTES: TODO #
+####################
+
+#printf "=======================================================================\n"
+#printf "03. curl --silent --request GET http://localhost:8080/v1/directors.json\n"
+#printf "=======================================================================\n"
+#printf "\n"
+#curl --silent --request GET http://localhost:8080/v1/directors.json
+#printf "\n"
+#sleep 1
+
+#printf "====================================================================================================\n"
+#printf "04. curl --silent --request GET http://localhost:8080/v1/directors.json?directors_from=New_York_City\n"
+#printf "====================================================================================================\n"
+#printf "\n"
+#curl --silent --request GET http://localhost:8080/v1/directors.json?directors_from=New_York_City
+#printf "\n"
+#sleep 1
 
 #printf "====================================================================================\n"
 #printf "05. curl --silent --request GET http://localhost:8080/v1/directors/Peele/movies.json\n"

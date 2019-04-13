@@ -319,8 +319,11 @@ v1.get ([ "/directors/:director/movies/:movie.json",
     // ex: Pulp_Fiction_1994
     var movie = request.params.movie;
 
+    var rc = 0;
+    var message = "Found director: " + director + ", movie: " + movie;
+
     // return json response
-    var jsonOut = { "error": null, "data": { "director": director, "moviename": movie, "moviejpg": movie + ".jpg", "moviejson": movie + ".json" }};
+    var jsonOut = { "rc": rc, "message": message, "data": { "director": director, "moviename": movie, "moviejpg": movie + ".jpg", "moviejson": movie + ".json" }};
     response.setHeader ("Content-Type", "application/json");
     response.end (JSON.stringify (jsonOut));
     });
