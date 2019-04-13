@@ -231,6 +231,7 @@ v1.get ([ "/directors.json",
     // RETURNS: json
     // ERROR  : n/a
 
+    // each folder is the name of a director
     fs.readdir ("../static/directors", function (err, directors)
         {
         var rc1;
@@ -247,16 +248,16 @@ v1.get ([ "/directors.json",
             rc = 0;
             message = "Directors found: " + directors.length;
 
+            // push a json key:value pair for each director
             for (var i = 0; i < directors.length; i++)
                 {
                 director_list.push ({ "name": directors [i] });
                 };
             }
 
+        // return json response
         jsonOut = { "rc": rc, "message": message, "data": { "directors": director_list }};
-
         response.setHeader ("Content-Type", "application/json");
-
         response.end (JSON.stringify (jsonOut));
         });
     });
