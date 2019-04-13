@@ -44,15 +44,15 @@ function massage_director (d)
 
     // example json (d):
     //  { "error": null,
-    //    "data": { "director_data":
+    // af "data": { "director_data":
     //  { "director": "Quentin",
-    //    "movies": [{ "filename": "Reservoir_Dogs.json",
-    //                 "poster_url": "Reservoir_Dogs.jpg",
-    //                 "desc": "Reservoir Dogs" },
+    //    "movies": [{ "moviename": "Pulp_Fiction_1994",
+    //                 "moviejpg":  "Pulp_Fiction_1994.jpg",
+    //                 "moviejson": "Pulp_Fiction_1994.json" },
     //
-    //               { "filename": "Pulp_Fiction.json ",
-    //                 "poster_url": "Pulp_Fiction.jpg",
-    //                 "desc": "Pulp Fiction" }]}}};
+    //               { "moviename": "Jackie_Brown_1997",
+    //                 "moviejpg":  "Jackie_Brown_1997.jpg",
+    //                 "moviejson": "Jackie_Brown_1997.json" }]}}};
 
     // Set to "director_data" section of json
     var af = d.data.director_data;
@@ -64,17 +64,22 @@ function massage_director (d)
 
     for (var i = 0; i < af.movies.length; i++)
         {
-        // ex: Pulp_Fiction.json
-        var movie_foldername = af.movies [i].filename;
+        // ex: Pulp_Fiction_1994
+        var moviename = af.movies [i].moviename;
 
         // path to jpg. ex: /directors/Quentin/Pulp_Fiction_1994.jpg
-        var poster_url = "/directors/" + director + "/" + af.movies [i].poster_url;
+        var poster_url = "/directors/" + director + "/" + af.movies [i].moviejpg;
 
-        // path to url. ex: /director/Quentin/Pulp_Fiction_1994 (slice remove .json extension)
-        var movie_url = "/pages/director/" + director + "/" + movie_foldername.slice (0, -5);
+        // path to url. ex: /pages/director/Quentin/Pulp_Fiction_1994
+        var movie_url = "/pages/director/" + director + "/" + moviename;
 
-        obj.movies.push ({ poster_url: poster_url, movie_url: movie_url, desc: af.movies [i].filename });
+        //alert ("poster_url: " + poster_url + "\n" + 
+        //       "movie_url: "  + movie_url  + "\n" +
+        //       "moviename: "  + moviename);
+
+        obj.movies.push ({ poster_url: poster_url, movie_url: movie_url, moviename: moviename });
         }
+
     return obj;
     }
 

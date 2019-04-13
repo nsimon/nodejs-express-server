@@ -298,9 +298,9 @@ v1.get ([ "/directors/:director.json",
                 {
                 moviename = path.parse (movies [i]).name;  // Pulp_Fiction_1994
 
-                movie_list.push ({ "filename":   moviename + ".json",  // ex: Pulp_Fiction_1994.json
-                                   "poster_url": moviename + ".jpg",   // ex: Pulp_Fiction_1994.jpg
-                                   "desc": moviename });               // ex: Pulp_Fiction_1994
+                movie_list.push ({ "moviename": moviename,              // ex: Pulp_Fiction_1994
+                                   "moviejpg":  moviename + ".jpg",     // ex: Pulp_Fiction_1994.jpg
+                                   "moviejson": moviename + ".json"});  // ex: Pulp_Fiction_1994.json
                 };
             }
 

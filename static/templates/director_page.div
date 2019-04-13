@@ -7,7 +7,7 @@
   <div class="movie">
     <a href="{{ movie_url }}"><img src="{{ poster_url }}" border="0"/></a>
     <div class="movie_desc">
-      <p><a href="{{ movie_url }}">{{ desc }}</a></p>
+      <p><a href="{{ movie_url }}">{{ moviename }}</a></p>
     </div>
   </div>
 
