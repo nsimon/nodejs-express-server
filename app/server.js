@@ -176,7 +176,7 @@ v1.get ([ "/pages/:page_name",
     console.log ("");
 
     // read basic.html template
-    fs.readFile ("../static/templates/basic.html", function (err, contents)
+    fs.readFile ("../static/templates/basic.html", (err, contents) =>
         {
         if (err)
             {
