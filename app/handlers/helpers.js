@@ -1,34 +1,62 @@
-// TODO: place helper functions in here (available to server.js)
+var helpers = require ("./helpers.js");
+var async   = require ("async");
+var fs      = require ("fs");
 
-exports.version = '0.1.0';
+exports.version = "0.1.0";
 
-exports.make_error = function (err, msg)
+exports.list_all = function (request, response)
     {
-    var e = new Error (msg);
-    e.code = err;
-    return e;
-    }
+    load_director_list (function (err, directors)
+        {
+        if (err)
+            {
+            helpers.send_failure (response, 500, err);
+            }
+        else
+            {
+            helpers.send_success (response, { directors: directors });
+            }
+        });
+    };
 
-exports.send_success = function (response, data)
+function load_director_list (callback)
     {
-    response.writeHead (200, { "Content-Type": "application/json" });
-    var output = { error: null, data: data };
-    response.end (JSON.stringify (output) + "\n");
-    }
+    // assume that any directory in our "directors" subfolder is a director
+    fs.readdir ("../static/directors", function (err, files)
+        {
+        if (err)
+            {
+            callback (helpers.make_error ("file_error", JSON.stringify (err)));
+            return;
+            }
 
-exports.send_failure = function (response, rest_rc, message)
-    {
-    response.writeHead (rest_rc, { "Content-Type" : "application/json" });
-    response.end (JSON.stringify ({ error: rest_rc, message: message }) + "\n");
-    }
+        console.log ("files: ", files);
 
-exports.invalid_resource = function ()
-    {
-    return exports.make_error ("invalid_resource", "the requested resource does not exist");
-    }
+        var only_dirs = [];
 
-exports.no_such_album = function ()
-    {
-    return exports.make_error ("no_such_album", "the specified album does not exist");
-    }
+        async.forEach (files, function (element, cb)
+            {
+            fs.stat ("../static/directors/" + element, function (err, stats)
+                {
+                if (err)
+                    {
+                    cb (helpers.make_error ("file_error", JSON.stringify (err)));
+                    return;
+                    }
+                else
+                    {
+                    only_dirs.push ({ name: element });
+                    }
+
+                cb (null);
+                });
+            },
+
+            function (err)
+                {
+                callback (err, err ? null : only_dirs);
+                }
+            );
+        });
+    };
 
