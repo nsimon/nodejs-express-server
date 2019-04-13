@@ -4,59 +4,36 @@ var fs      = require ("fs");
 
 exports.version = "0.1.0";
 
-exports.list_all = function (request, response)
+exports.load_director_list = () =>
     {
-    load_director_list (function (err, directors)
-        {
-        if (err)
-            {
-            helpers.send_failure (response, 500, err);
-            }
-        else
-            {
-            helpers.send_success (response, { directors: directors });
-            }
-        });
-    };
+    var jsonOut;
 
-function load_director_list (callback)
-    {
-    // assume that any directory in our "directors" subfolder is a director
+    // read the directors directory (each folder name is a director)
     fs.readdir ("../static/directors", function (err, files)
         {
         if (err)
             {
-            callback (helpers.make_error ("file_error", JSON.stringify (err)));
-            return;
+            var rc = 1;
+            var message = "Internal server error";
+            jsonOut = { "error": rc, "message": message };
             }
-
-        console.log ("files: ", files);
-
-        var only_dirs = [];
-
-        async.forEach (files, function (element, cb)
+        else
             {
-            fs.stat ("../static/directors/" + element, function (err, stats)
+            console.log ("files: ", files);
+
+            var directors = [];
+
+            async.forEach (files, function (element, cb)
                 {
-                if (err)
-                    {
-                    cb (helpers.make_error ("file_error", JSON.stringify (err)));
-                    return;
-                    }
-                else
-                    {
-                    only_dirs.push ({ name: element });
-                    }
+                directors.push ({ "name": element });
 
                 cb (null);
                 });
-            },
 
-            function (err)
-                {
-                callback (err, err ? null : only_dirs);
-                }
-            );
+            jsonOut = directors;
+            }
+
+        return (jsonOut);
         });
-    };
+    }
 
