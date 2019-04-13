@@ -231,12 +231,34 @@ v1.get ([ "/directors.json",
     // RETURNS: json
     // ERROR  : n/a
 
-    // Create jsonOut
-    var jsonOut = { "error": null, "data": { "directors": [{ "name": "Quentin" }, { "name": "Scorsese" }]}};
+    fs.readdir ("../static/directors", function (err, directors)
+        {
+        var rc1;
+        var jsonOut;
+        var director_list = [];
 
-    response.setHeader ("Content-Type", "application/json");
+        if (err)
+            {
+            rc = 1;
+            message = "Unable to read directors";
+            }
+        else
+            {
+            rc = 0;
+            message = "Directors found: " + directors.length;
 
-    response.end (JSON.stringify (jsonOut));
+            for (var i = 0; i < directors.length; i++)
+                {
+                director_list.push ({ "name": directors [i] });
+                };
+            }
+
+        jsonOut = { "rc": rc, "message": message, "data": { "directors": director_list }};
+
+        response.setHeader ("Content-Type", "application/json");
+
+        response.end (JSON.stringify (jsonOut));
+        });
     });
 
 v1.get ([ "/directors/:director.json",
