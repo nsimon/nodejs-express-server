@@ -143,6 +143,12 @@ v1.all ("*", (request, response, next) =>
 
 v1.get ("/", (request, response) =>
     {
+    // DESC:    redirect to /pages/home
+    // URLS:    http://localhost:8080/
+    //          http://localhost:8080
+    // RETURNS: n/a
+    // ERROR:   n/a
+
     response.redirect ("/pages/home");
     response.end ();
     });
