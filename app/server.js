@@ -158,8 +158,6 @@ v1.get ([ "/pages/:page_name",
     //          /pages/director/Quentin/Pulp_Fiction
     // DESC:    home page of all directors
     // RETURNS: html
-    // ERROR:
-    // TODO:    add error handling
 
     // ex: Quentin (optional)
     var director = request.params.director;
@@ -225,7 +223,6 @@ v1.get ([ "/directors.json",
     //          /directors.json?directors_from=New_York_City
     // DESC:    get all directors (with optional filters)
     // RETURNS: json
-    // ERROR  : n/a
 
     // each folder is the name of a director
     fs.readdir ("../static/directors", (err, directors) =>
@@ -264,7 +261,6 @@ v1.get ([ "/directors/:director.json",
     // EX:      /directors/Quentin.json
     // DESC:    get director and his movies
     // RETURNS: json
-    // ERROR:   n/a
 
     // ex: Quentin
     var director = request.params.director;
@@ -311,7 +307,6 @@ v1.get ([ "/directors/:director/movies/:movie.json",
     // EX:      /directors/Quentin/movies/Pulp_Fiction_1994.json
     // DESC:    get specified movie for director
     // RETURNS: json
-    // ERROR:   movie does not exist
 
     // ex: Quentin
     var director = request.params.director;
@@ -326,6 +321,22 @@ v1.get ([ "/directors/:director/movies/:movie.json",
     var jsonOut = { "rc": rc, "message": message, "data": { "director": director, "moviename": movie, "moviejpg": movie + ".jpg", "moviejson": movie + ".json" }};
     response.setHeader ("Content-Type", "application/json");
     response.end (JSON.stringify (jsonOut));
+    });
+
+// TODO NEXT
+v1.get ([ "/directors/:director/movies.json",
+          "/directors/:director/movies.xml" ], (request, response) =>
+    {
+    // EX:    /directors/Quentin/movies.json
+    // DESC:  get all movies for director
+
+    // ex: Quentin
+    var director = request.params.director;
+
+    // mock data
+    var movies = [{ "name": "Get_Out" }, { "name": "Us" }];
+
+    response.render ("movies.ejs", { "director": director, "movies": movies });
     });
 
 /******************************************************************************/
@@ -374,46 +385,6 @@ v1.get ([ "/directors/:director/movies/:movie.json",
 //
 //      response.render ("directors.ejs", { directors: directors });
 //      });
-
-v1.get ([ "/directors/:director/movies.json",
-          "/directors/:director/movies.xml" ], (request, response) =>
-    {
-    // DESC:  get all movies for director (with optional filters)
-    // URL:   http://localhost:8080/v1/directors/Peele/movies.json
-    // URL:   http://localhost:8080/v1/directors/Peele/movies.json?page=1&page_size=25
-    // ERROR: director does not exist
-
-    var page      = request.query.page;
-    var page_size = request.query.page_size;
-
-    // Check if 'page' query param was specified
-    if (typeof page === "undefined")
-        {
-        //console.log ("page: <undefined>");
-        }
-    else
-        {
-        //console.log ("page: " + page);
-        }
-
-    // Check if 'page_size' query param was specified
-    if (typeof page_size === "undefined")
-        {
-        //console.log ("page_size: <undefined>");
-        }
-    else
-        {
-        //console.log ("page_size: " + page_size);
-        }
-
-    // ex: Peele
-    var director = request.params.director;
-
-    // mock data
-    var movies = [{ "name": "Get_Out" }, { "name": "Us" }];
-
-    response.render ("movies.ejs", { "director": director, "movies": movies });
-    });
 
 /******************************************************************************/
 /* v1 api - PUT                                                               */

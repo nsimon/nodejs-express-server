@@ -29,30 +29,30 @@ printf "\n"
 # API ROUTES: GET #
 ###################
 
-printf "curl --silent --request GET http://localhost:8080/v1/directors.json\n"
-printf "\n"
-curl --silent --request GET http://localhost:8080/v1/directors.json
-printf "\n"
-printf "\n"
+#printf "curl --silent --request GET http://localhost:8080/v1/directors.json\n"
+#printf "\n"
+#curl --silent --request GET http://localhost:8080/v1/directors.json
+#printf "\n"
+#printf "\n"
 
-printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin.json\n"
-printf "\n"
-curl --silent --request GET http://localhost:8080/v1/directors/Quentin.json
-printf "\n"
-printf "\n"
+#printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin.json\n"
+#printf "\n"
+#curl --silent --request GET http://localhost:8080/v1/directors/Quentin.json
+#printf "\n"
+#printf "\n"
 
-printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies/Pulp_Fiction_1994.json\n"
-printf "\n"
-curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies/Pulp_Fiction_1994.json
-printf "\n"
-printf "\n"
+#printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies/Pulp_Fiction_1994.json\n"
+#printf "\n"
+#curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies/Pulp_Fiction_1994.json
+#printf "\n"
+#printf "\n"
 
 # TODO NEXT:
-#printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json\n"
-#printf "\n"
-#curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json
-#printf "\n"
-#printf "\n"
+printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json\n"
+printf "\n"
+curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json
+printf "\n"
+printf "\n"
 
 ####################
 # API ROUTES: TODO #
