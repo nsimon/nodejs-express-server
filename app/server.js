@@ -125,7 +125,7 @@ app.use (express.static (__dirname + "/../static"));
 app.listen (8080);
 
 /******************************************************************************/
-/* v1 api - all                                                               */
+/* ROUTES: vi.all()                                                           */
 /******************************************************************************/
 
 v1.all ("*", (request, response, next) =>
@@ -138,14 +138,13 @@ v1.all ("*", (request, response, next) =>
     });
 
 /******************************************************************************/
-/* v1 api - GET                                                               */
+/* BROWSER ROUTES: v1.get()                                                   */
 /******************************************************************************/
 
 v1.get ("/", (request, response) =>
     {
+    // EX:      /
     // DESC:    redirect to /pages/home
-    // URLS:    http://localhost:8080/
-    //          http://localhost:8080
     // RETURNS: n/a
     // ERROR:   n/a
 
@@ -157,11 +156,11 @@ v1.get ([ "/pages/:page_name",
           "/pages/:page_name/:director",
           "/pages/:page_name/:director/:movie" ], (request, response) =>
     {
+    // EX:      /
+    //          /pages/home
+    //          /pages/director/Quentin
+    //          /pages/director/Quentin/Pulp_Fiction
     // DESC:    home page of all directors
-    // URLS:    http://localhost:8080
-    //          http://localhost:8080/pages/home
-    //          http://localhost:8080/pages/director/Quentin
-    //          http://localhost:8080/pages/director/Quentin/Pulp_Fiction
     // RETURNS: html
     // ERROR:   n/a
     // TODO:    add "movie" support
@@ -219,6 +218,56 @@ v1.get ([ "/pages/:page_name",
             }
         });
     });
+
+/******************************************************************************/
+/* API ROUTES: v1.get()                                                       */
+/******************************************************************************/
+
+v1.get ([ "/directors/:director.json",
+          "/directors/:director.xml" ], (request, response) =>
+    {
+    // EX:      /directors/Scorsese.json
+    // DESC:    get director and his movies
+    // RETURNS: json
+    // ERROR:   n/a
+    // TODO:    get data via fs.readFile()
+
+    // Create jsonOut
+    var jsonOut = { "error": null, "data": { "director_data": { "director": "Quentin", "movies": [{ "filename": "Reservoir_Dogs_1992.json", "poster_url": "Reservoir_Dogs_1992.jpg", "desc": "Reservoir Dogs" }, { "filename": "Pulp_Fiction_1994", "poster_url": "Pulp_Fiction_1994.jpg", "desc": "Pulp Fiction" }]}}};
+
+    response.setHeader ("Content-Type", "application/json");
+
+    response.end (JSON.stringify (jsonOut));
+    });
+
+v1.get ([ "/directors/:director/movie/:movie.json",
+          "/directors/:director/movie/:movie.xml" ], (request, response) =>
+    {
+    // EX:      /directors/Peele/movie/Get_Out_2018.json
+    // DESC:    get specified movie for director
+    // RETURNS: json
+    // ERROR:   movie does not exist
+    // TODO:    fs.read :movie.json
+
+    // ex: Peele
+    var director = request.params.director;
+    console.log ("director ... " + director);
+
+    // ex: Get_Out
+    var movie = request.params.movie;
+    console.log ("movie ...... " + movie);
+    console.log ("");
+
+    var jsonOut = { "error": null, "data": { "director": director, "filename": "Pulp_Fiction_1994.json", "poster_url": "Pulp_Fiction_1994.jpg", "desc": "Pulp Fiction" }};
+
+    response.setHeader ("Content-Type", "application/json");
+
+    response.end (JSON.stringify (jsonOut));
+    });
+
+/******************************************************************************/
+/* API ROUTES: TODO                                                           */
+/******************************************************************************/
 
 //v1.get ("/templates/:template_name", (request, response) =>
 //    {
@@ -280,23 +329,6 @@ v1.get ([ "/directors.json",
 //      });
     });
 
-v1.get ([ "/directors/:director.json",
-          "/directors/:director.xml" ], (request, response) =>
-    {
-    // DESC:    get director and his movies
-    // URLS:    http://localhost:8080/v1/directors/Scorsese.json
-    // RETURNS: json
-    // ERROR:   n/a
-    // TODO:    get data via fs.readFile()
-
-    // Create jsonOut
-    var jsonOut = { "error": null, "data": { "director_data": { "director": "Quentin", "movies": [{ "filename": "Reservoir_Dogs_1992.json", "poster_url": "Reservoir_Dogs_1992.jpg", "desc": "Reservoir Dogs" }, { "filename": "Pulp_Fiction_1994", "poster_url": "Pulp_Fiction_1994.jpg", "desc": "Pulp Fiction" }]}}};
-
-    response.setHeader ("Content-Type", "application/json");
-
-    response.end (JSON.stringify (jsonOut));
-    });
-
 v1.get ([ "/directors/:director/movies.json",
           "/directors/:director/movies.xml" ], (request, response) =>
     {
@@ -335,31 +367,6 @@ v1.get ([ "/directors/:director/movies.json",
     var movies = [{ "name": "Get_Out" }, { "name": "Us" }];
 
     response.render ("movies.ejs", { "director": director, "movies": movies });
-    });
-
-v1.get ([ "/directors/:director/movie/:movie.json",
-          "/directors/:director/movie/:movie.xml" ], (request, response) =>
-    {
-    // DESC:    get specified movie for director
-    // URL:     http://localhost:8080/v1/directors/Peele/movie/Get_Out_2018.json
-    // RETURNS: json
-    // ERROR:   movie does not exist
-    // TODO:    fs.read :movie.json
-
-    // ex: Peele
-    var director = request.params.director;
-    console.log ("director ... " + director);
-
-    // ex: Get_Out
-    var movie = request.params.movie;
-    console.log ("movie ...... " + movie);
-    console.log ("");
-
-    var jsonOut = { "error": null, "data": { "director": director, "filename": "Pulp_Fiction_1994.json", "poster_url": "Pulp_Fiction_1994.jpg", "desc": "Pulp Fiction" }};
-
-    response.setHeader ("Content-Type", "application/json");
-
-    response.end (JSON.stringify (jsonOut));
     });
 
 /******************************************************************************/
