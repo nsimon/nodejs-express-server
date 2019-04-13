@@ -1,9 +1,0 @@
-{ 
-    "directors": [
-        { "name": "McDonagh", "director_from": "London" },
-        { "name": "Peele",    "director_from": "New_York_City" },
-        { "name": "Quentin",  "director_from": "Knoxville" },
-        { "name": "Reitman",  "director_from": "Montreal" },
-        { "name": "Scorsese", "director_from": "New_York_City" }
-     ]
-}
