@@ -223,6 +223,24 @@ v1.get ([ "/pages/:page_name",
 /* API ROUTES: v1.get()                                                       */
 /******************************************************************************/
 
+v1.get ([ "/directors.json",
+          "/directors.xml" ], (request, response) =>
+    {
+    // EX:      /directors.json
+    //          /directors.json?directors_from=New_York_City
+    // DESC:    get all directors (with optional filters)
+    // RETURNS: json
+    // ERROR  : n/a
+    // TODO:    get data via fs.readFile()
+
+    // Create jsonOut
+    var jsonOut = { "error": null, "data": { "directors": [{ "name": "Quentin" }, { "name": "Scorsese" }]}};
+
+    response.setHeader ("Content-Type", "application/json");
+
+    response.end (JSON.stringify (jsonOut));
+    });
+
 v1.get ([ "/directors/:director.json",
           "/directors/:director.xml" ], (request, response) =>
     {
@@ -279,23 +297,7 @@ v1.get ([ "/directors/:director/movie/:movie.json",
 //    serve_static_file ("content/" + request.params.filename, response);
 //    });
 
-v1.get ([ "/directors.json",
-          "/directors.xml" ], (request, response) =>
-    {
-    // DESC:    get all directors (with optional filters)
-    // URLS:    http://localhost:8080/v1/directors.json
-    //          http://localhost:8080/v1/directors.json?directors_from=New_York_City
-    // RETURNS: json
-    // ERROR  : n/a
-    // TODO:    get data via fs.readFile()
-
-    // Create jsonOut
-    var jsonOut = { "error": null, "data": { "directors": [{ "name": "Quentin" }, { "name": "Scorsese" }]}};
-
-    response.setHeader ("Content-Type", "application/json");
-
-    response.end (JSON.stringify (jsonOut));
-
+// CODE SNIP:
 //  var directors_from = request.query.directors_from;
 //
 //  fs.readFile ("directors/directors.json", (err, data) =>
@@ -327,7 +329,6 @@ v1.get ([ "/directors.json",
 //
 //      response.render ("directors.ejs", { directors: directors });
 //      });
-    });
 
 v1.get ([ "/directors/:director/movies.json",
           "/directors/:director/movies.xml" ], (request, response) =>
