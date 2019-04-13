@@ -3,9 +3,6 @@
 
 // TODO
 //
-// Build-out the 3 page types:
-//   . /pages/director/:director/:movie
-//
 // Add support for remaining browser URLs:
 //   . /templates/:template_name
 //   . /content/:filename
@@ -37,6 +34,7 @@
 //   . images
 //   . /pages/home
 //   . /pages/director/:director
+//   . /pages/director/:director/:movie
 
 // Supported HTTP status return codes:
 //   . 200 OK           Request successful
@@ -52,13 +50,13 @@
 
 // Required libs
 var async      = require ("async");
-var datetime   = require ("node-datetime");
-var express    = require ("express");
 var bodyParser = require ("body-parser");
+var express    = require ("express");
 var fs         = require ("fs");
-var util       = require ("util");
 var glob       = require ("glob");
+var datetime   = require ("node-datetime");
 var path       = require ("path");
+var util       = require ("util");
 
 var helpers    = require ("./handlers/helpers.js");
 
