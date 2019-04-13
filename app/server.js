@@ -162,9 +162,8 @@ v1.get ([ "/pages/:page_name",
     //          /pages/director/Quentin/Pulp_Fiction
     // DESC:    home page of all directors
     // RETURNS: html
-    // ERROR:   n/a
-    // TODO:    add "movie" support
-    // TODO:    error handling (e.g. /pages/director)
+    // ERROR:
+    // TODO:    add error handling
 
     // ex: Quentin (optional)
     var director = request.params.director;
@@ -231,7 +230,6 @@ v1.get ([ "/directors.json",
     // DESC:    get all directors (with optional filters)
     // RETURNS: json
     // ERROR  : n/a
-    // TODO:    get data via fs.readFile()
 
     // Create jsonOut
     var jsonOut = { "error": null, "data": { "directors": [{ "name": "Quentin" }, { "name": "Scorsese" }]}};
