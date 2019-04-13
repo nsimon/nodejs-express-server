@@ -310,25 +310,20 @@ v1.get ([ "/directors/:director.json",
 v1.get ([ "/directors/:director/movie/:movie.json",
           "/directors/:director/movie/:movie.xml" ], (request, response) =>
     {
-    // EX:      /directors/Peele/movie/Get_Out_2018.json
+    // EX:      /directors/Quentin/movie/Pulp_Fiction_1994.json
     // DESC:    get specified movie for director
     // RETURNS: json
     // ERROR:   movie does not exist
-    // TODO:    fs.read :movie.json
 
-    // ex: Peele
+    // ex: Quentin
     var director = request.params.director;
-    console.log ("director ... " + director);
 
-    // ex: Get_Out
+    // ex: Pulp_Fiction_1994
     var movie = request.params.movie;
-    console.log ("movie ...... " + movie);
-    console.log ("");
 
-    var jsonOut = { "error": null, "data": { "director": director, "filename": "Pulp_Fiction_1994.json", "poster_url": "Pulp_Fiction_1994.jpg", "desc": "Pulp Fiction" }};
-
+    // return json response
+    var jsonOut = { "error": null, "data": { "director": director, "moviename": movie, "moviejpg": movie + ".jpg", "moviejson": movie + ".json" }};
     response.setHeader ("Content-Type", "application/json");
-
     response.end (JSON.stringify (jsonOut));
     });
 

@@ -23,7 +23,7 @@ $(function ()
         // ex: /v1/directors/Quentin/movie/Pulp_Fiction_1994.json
         $.getJSON ("/v1/directors/" + director_name + "/movie/" + movie_name + ".json", function (d)
             {
-            var movie_d = massage_director (d);
+            var movie_d = massage_movie (d);
 
             $.extend (tdata, movie_d);
             });
@@ -38,21 +38,30 @@ $(function ()
         }();
     });
 
-function massage_director (d)
+function massage_movie (d)
     {
     if (d.error != null)
         {
         return d;
         }
 
-    var filename  = d.data.filename;  // ex: Pulp_Fiction_1994.json
-    var desc      = d.data.desc;      // ex: Pulp Fiction_1994
-    var director  = d.data.director;  // ex: Scorsese
+    // example json (d):
+    //  { "error": null,
+    //    "data": { "director": director,
+    //              "moviename": movie,
+    //              "moviejpg":  movie + ".jpg",
+    //              "moviejson": movie + ".json" }
+    //  };
 
-    // ex: /directors/Scorsese/Pulp_Fiction_1994.jpg
-    var poster_url = "/directors/" + director + "/" + d.data.poster_url;
+    var director  = d.data.director;   // ex: Quentin
+    var moviename = d.data.moviename;  // ex: Pulp Fiction_1994
+    var moviejpg  = d.data.moviejpg;   // ex: Pulp_Fiction_1994.jpg
+    var moviejson = d.data.moviejson;  // ex: Pulp_Fiction_1994.json
 
-    var obj = { "director": director, "poster_url": poster_url, "desc": filename };
+    // ex: /directors/Quentin/Pulp_Fiction_1994.jpg
+    var poster_url = "/directors/" + director + "/" + moviejpg;
+
+    var obj = { "director": director, "moviename": moviename, "poster_url": poster_url };
 
     return obj;
     }

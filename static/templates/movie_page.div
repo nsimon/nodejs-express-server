@@ -1,8 +1,12 @@
 <div id="movie_page">
 
+  <div class="director">
+    <p>Directed by: {{ director }}</p>
+  </div>
+
   <div class="movie">
     <img src="{{ poster_url }}" border="0"/>
-    <div class="movie_desc"><p>{{ desc }}</p>
+    <div class="movie_desc"><p>{{ moviename }}</p>
     </div>
   </div>
 

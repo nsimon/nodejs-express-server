@@ -44,15 +44,14 @@ function massage_director (d)
 
     // example json (d):
     //  { "error": null,
-    // af "data": { "director_data":
-    //  { "director": "Quentin",
-    //    "movies": [{ "moviename": "Pulp_Fiction_1994",
-    //                 "moviejpg":  "Pulp_Fiction_1994.jpg",
-    //                 "moviejson": "Pulp_Fiction_1994.json" },
+    //    "data": { "director_data": { "director": "Quentin",
+    //      "movies": [{ "moviename": "Pulp_Fiction_1994",
+    //                   "moviejpg":  "Pulp_Fiction_1994.jpg",
+    //                   "moviejson": "Pulp_Fiction_1994.json" },
     //
-    //               { "moviename": "Jackie_Brown_1997",
-    //                 "moviejpg":  "Jackie_Brown_1997.jpg",
-    //                 "moviejson": "Jackie_Brown_1997.json" }]}}};
+    //                 { "moviename": "Jackie_Brown_1997",
+    //                   "moviejpg":  "Jackie_Brown_1997.jpg",
+    //                   "moviejson": "Jackie_Brown_1997.json" }]}}};
 
     // Set to "director_data" section of json
     var af = d.data.director_data;
@@ -77,7 +76,7 @@ function massage_director (d)
         //       "movie_url: "  + movie_url  + "\n" +
         //       "moviename: "  + moviename);
 
-        obj.movies.push ({ poster_url: poster_url, movie_url: movie_url, moviename: moviename });
+        obj.movies.push ({ moviename: moviename, poster_url: poster_url, movie_url: movie_url });
         }
 
     return obj;
