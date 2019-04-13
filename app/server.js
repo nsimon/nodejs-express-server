@@ -65,17 +65,25 @@ var util       = require ("util");
 var helpers    = require ("./handlers/helpers.js");
 
 /******************************************************************************/
-/* logging                                                                    */
+/* log to logfile (create and append)                                         */
 /******************************************************************************/
 
-// Cause console.log() to log to console AND logfile
-var log_file   = fs.createWriteStream ("./_server.log", {flags : "w"});
-var log_stdout = process.stdout;
-console.log = (d) =>
+// false: do not log to logfile
+// true:  log to logfile
+var logToFile = false;
+var logfile   = "./_server.log";
+
+if (logToFile)
     {
-    log_file.write (util.format (d) + "\n");
-    log_stdout.write (util.format (d) + "\n");
-    };
+    // Cause console.log() to log to console AND logfile
+    var log_file   = fs.createWriteStream (logfile, {flags : "w"});
+    var log_stdout = process.stdout;
+    console.log = (d) =>
+        {
+        log_file.write (util.format (d) + "\n");
+        log_stdout.write (util.format (d) + "\n");
+        }
+    }
 
 // Display current time
 var dt = datetime.create ();
