@@ -5,7 +5,7 @@
 
   {{ #movies }}
   <div class="movie">
-    <a href="{{ movie_url }}"><img style="width: 250px; height: 250px; background-color: #fbb" src="{{ poster_url }}" border="0"/></a>
+    <a href="{{ movie_url }}"><img src="{{ poster_url }}" border="0"/></a>
     <div class="movie_desc">
       <p><a href="{{ movie_url }}">{{ desc }}</a></p>
     </div>
