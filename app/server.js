@@ -61,6 +61,8 @@ var express    = require ("express");
 var bodyParser = require ("body-parser");
 var fs         = require ("fs");
 var util       = require ("util");
+var glob       = require ("glob");
+var path       = require ("path");
 
 var helpers    = require ("./handlers/helpers.js");
 
@@ -265,18 +267,48 @@ v1.get ([ "/directors.json",
 v1.get ([ "/directors/:director.json",
           "/directors/:director.xml" ], (request, response) =>
     {
-    // EX:      /directors/Scorsese.json
+    // EX:      /directors/Quentin.json
     // DESC:    get director and his movies
     // RETURNS: json
     // ERROR:   n/a
-    // TODO:    get data via fs.readFile()
 
-    // Create jsonOut
-    var jsonOut = { "error": null, "data": { "director_data": { "director": "Quentin", "movies": [{ "filename": "Reservoir_Dogs_1992.json", "poster_url": "Reservoir_Dogs_1992.jpg", "desc": "Reservoir Dogs" }, { "filename": "Pulp_Fiction_1994", "poster_url": "Pulp_Fiction_1994.jpg", "desc": "Pulp Fiction" }]}}};
+    // ex: Quentin
+    var director = request.params.director;
+    console.log ("director ... " + director);
 
-    response.setHeader ("Content-Type", "application/json");
+    // each folder is the name of a director
+    glob ("../static/directors/" + director + "/*.json", function (err, movies)
+        {
+        var rc1;
+        var jsonOut;
+        var movie_list = [];
 
-    response.end (JSON.stringify (jsonOut));
+        if (err)
+            {
+            rc = 1;
+            message = "Unable to read movies";
+            }
+        else
+            {
+            rc = 0;
+            message = "Movies found: " + movies.length;
+
+            // push a json key:value pair for each movie
+            for (var i = 0; i < movies.length; i ++)
+                {
+                moviename = path.parse (movies [i]).name;  // Pulp_Fiction_1994
+
+                movie_list.push ({ "filename":   moviename + ".json",  // ex: Pulp_Fiction_1994.json
+                                   "poster_url": moviename + ".jpg",   // ex: Pulp_Fiction_1994.jpg
+                                   "desc": moviename });               // ex: Pulp_Fiction_1994
+                };
+            }
+
+        // return json response
+        jsonOut = { "rc": rc, "message": message, "data": { "director_data": { "director": director, "movies": movie_list }}};
+        response.setHeader ("Content-Type", "application/json");
+        response.end (JSON.stringify (jsonOut));
+        });
     });
 
 v1.get ([ "/directors/:director/movie/:movie.json",
