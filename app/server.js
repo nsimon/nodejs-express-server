@@ -7,6 +7,9 @@
 //   . /templates/:template_name
 //   . /content/:filename
 //
+// Standize rest api return codes (200 ok, etc.)
+//   . THIS IS HOW: response.status (200).send ({ result: result });
+//
 // directors.json:
 //   . add, change, delete
 //
@@ -322,7 +325,6 @@ v1.get ([ "/directors/:director/movies/:movie.json",
     response.end (JSON.stringify (jsonOut));
     });
 
-// TODO NEXT
 v1.get ([ "/directors/:director/movies.json",
           "/directors/:director/movies.xml" ], (request, response) =>
     {
@@ -359,10 +361,6 @@ v1.get ([ "/directors/:director/movies.json",
                 };
             }
 
-        // {"error":null,"data":{"movies":
-        // [{"filename":"Reservoir_Dogs_1992.txt ","desc":"Reservoir Dogs"},
-        //  {"filename":"Pulp_Fiction_1994.txt ","desc":"Pulp Fiction"}]}}
-
         // return json response
         jsonOut = { "rc": rc, "message": message, "data": { "movies": movie_list }};
         response.setHeader ("Content-Type", "application/json");
@@ -371,63 +369,84 @@ v1.get ([ "/directors/:director/movies.json",
     });
 
 /******************************************************************************/
-/* API ROUTES: TODO                                                           */
+/* API ROUTES: v1.put()                                                       */
 /******************************************************************************/
 
-//v1.get ("/templates/:template_name", (request, response) =>
-//    {
-//    serve_static_file ("templates/" + request.params.template_name, response);
-//    });
-
-//v1.get ("/content/:filename", (request, response) =>
-//    {
-//    serve_static_file ("content/" + request.params.filename, response);
-//    });
-
-/******************************************************************************/
-/* v1 api - PUT                                                               */
-/******************************************************************************/
-
-v1.put ("/directors/:director", (request, response) =>
+v1.put ("/directors.json", (request, response) =>
     {
-    // DESC:  update existing director
-    // URL:   http://localhost:8080/v1/directors/Peele
-    // DATA:  updatedFrom:"England"
-    // ERROR: director does not exist
-    // ERROR: updatedFrom not specified
+    // EX:      /v1/directors.json
+    // DESC:    creates the directors from the data (body must contain data for ALL directors)
+    // RETURNS: 200 ok
 
-    // ex: Peele
-    var director = request.params.director;
+    var mkdirFailed = 0;  // reset to 1 on failure
 
-    // ex: England
-    var updatedFrom = request.body.updatedFrom;
+    // ex: directors: [{"name":"McDonagh"},{"name":"Peele"},{"name":"Quentin"},{"name":"Reitman"},{"name":"Scorsese"}]
+    var directors = request.body.data.directors;
 
-    var result = "director updatedFrom: " + updatedFrom;
+    // appended for each folder created
+    var directors_created_list = [];
 
-    response.status (200).send ({ result: result });
+    async.forEach (directors, (element, cb) =>
+        {
+        var directorFolder = "../static/directors/" + element.name;
+        //console.log ("Checking for directorFolder: " + directorFolder);
+
+        // if director (folder) exists...
+        if (fs.existsSync (directorFolder))
+            {
+            // skip
+            //console.log ("directorFolder exists: " + directorFolder);
+            }
+        else
+            {
+            // create director (folder)
+            //console.log ("creating directorFolder: " + directorFolder);
+            fs.mkdirSync (directorFolder);
+
+            if (!fs.existsSync (directorFolder))
+                {
+                // error
+                mkdirFailed = 1;
+                }
+            else
+                {
+                directors_created_list.push ({ "name": element.name });
+                }
+            }
+        });
+
+    var rc;
+    var message;
+
+    if (mkdirFailed)
+        {
+        rc = 500;  // error
+        message = "Failed to create director";
+        }
+    else
+        {
+        rc = 200;  // success
+        message = "directors created: " + directors_created_list.length;
+        }
+
+    var jsonOut = { "rc": rc, "message": message, "data": { "directors_created_list": directors_created_list }};
+
+    response.status (rc).send (jsonOut);
     });
 
-v1.put ("/directors/:director/:movie", (request, response) =>
-    {
-    // DESC:  Update existing movie for director
-    // URL:   http://localhost:8080/v1/directors/Peele/Get_Out_2018
-    // DATA:  updatedLength:120
-    // ERROR: director does not exist
-    // ERROR: movie does not exist
-
-    // ex: Peele
-    var director = request.params.director;
-
-    // ex: Us_2019
-    var movie = request.params.movie;
-
-    // ex: England
-    var updatedLength = request.body.updatedLength;
-
-    var result = "movie updatedLength: " + updatedLength;
-
-    response.status (200).send ({ result: result });
-    });
+// v1.put ("/directors/:director.json", (request, response) =>
+//     {
+//     // DESC:  Update existing movie for director
+//     // URL:   http://localhost:8080/v1/directors/Peele/Get_Out_2018
+//     // DATA:  updatedLength:120
+//     // ERROR: director does not exist
+//     // ERROR: movie does not exist
+//
+//     // ex: Peele
+//     var director = request.params.director;
+//
+//     response.status (200).send ({ result: result });
+//     });
 
 /******************************************************************************/
 /* v1 api - POST                                                              */
@@ -512,6 +531,20 @@ v1.delete ("/directors/:director/movie/:movie", (request, response) =>
     // Send client response
     response.status (200).send ({ result: 0, message: message, director: director, movie: movie });
     });
+
+/******************************************************************************/
+/* API ROUTES: TODO                                                           */
+/******************************************************************************/
+
+//v1.get ("/templates/:template_name", (request, response) =>
+//    {
+//    serve_static_file ("templates/" + request.params.template_name, response);
+//    });
+
+//v1.get ("/content/:filename", (request, response) =>
+//    {
+//    serve_static_file ("content/" + request.params.filename, response);
+//    });
 
 /******************************************************************************/
 /* v1 api - helpers                                                           */
