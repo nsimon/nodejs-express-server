@@ -25,16 +25,15 @@
 //       }
 
 // Working:
-//   . All GET/PUT/POST/DELETE routes
 //   . .json/.xml routes
 //   . /v1 /v2 api separation
-//   . ejs templates
 //   . Log to file
 //   . CLI script that runs/tests all REST commands
 //   . images
 //   . /pages/home
 //   . /pages/director/:director
 //   . /pages/director/:director/:movie
+//   . 
 
 // Supported HTTP status return codes:
 //   . 200 OK           Request successful
