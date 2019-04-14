@@ -368,9 +368,6 @@ v1.get ([ "/directors/:director/movies.json",
         response.setHeader ("Content-Type", "application/json");
         response.end (JSON.stringify (jsonOut));
         });
-
-    // deprecated:
-    // response.render ("movies.ejs", { "director": director, "movies": movies });
     });
 
 /******************************************************************************/
@@ -386,39 +383,6 @@ v1.get ([ "/directors/:director/movies.json",
 //    {
 //    serve_static_file ("content/" + request.params.filename, response);
 //    });
-
-// CODE SNIP:
-//  var directors_from = request.query.directors_from;
-//
-//  fs.readFile ("directors/directors.json", (err, data) =>
-//      {
-//      if (err)
-//          {
-//          throw err;
-//          }
-//
-//      var jsonData = JSON.parse (data);
-//
-//      var directors = [];
-//
-//      for (var i = 0; i < jsonData.directors.length; i++)
-//          {
-//          var director = jsonData.directors [i];
-//
-//          if (typeof directors_from === "undefined")
-//              {
-//              // all
-//              directors.push ({ name: director.name });
-//              }
-//          else if (director.director_from == directors_from)
-//              {
-//              // filtered
-//              directors.push ({ name: director.name });
-//              }
-//          };
-//
-//      response.render ("directors.ejs", { directors: directors });
-//      });
 
 /******************************************************************************/
 /* v1 api - PUT                                                               */
@@ -582,9 +546,11 @@ v2.all ("*", (request, response, next) =>
 
 v2.get ("/", (request, response) =>
     {
-    var directors = [{ name: "Scorsese v2" }, { name: "Quentin v2" }];
+    // return json
+    var message = "Testing v2 api: in v2.get('/')";
 
-    response.render ("directors.ejs", { directors: directors });
+    response.writeHead (200, { "Content-Type" : "application/json" });
+    response.end (JSON.stringify ({ "rc": 0, "message": message }));
     });
 
 /******************************************************************************/

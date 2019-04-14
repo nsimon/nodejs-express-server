@@ -29,6 +29,18 @@ printf "\n"
 # API ROUTES: GET #
 ###################
 
+printf "curl --silent --request GET http://localhost:8080/v1/\n"
+printf "\n"
+curl --silent --request GET http://localhost:8080/v1/
+printf "\n"
+printf "\n"
+
+printf "curl --silent --request GET http://localhost:8080/v2/\n"
+printf "\n"
+curl --silent --request GET http://localhost:8080/v2/
+printf "\n"
+printf "\n"
+
 #printf "curl --silent --request GET http://localhost:8080/v1/directors.json\n"
 #printf "\n"
 #curl --silent --request GET http://localhost:8080/v1/directors.json
@@ -47,12 +59,11 @@ printf "\n"
 #printf "\n"
 #printf "\n"
 
-## TODO NEXT:
-printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json\n"
-printf "\n"
-curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json
-printf "\n"
-printf "\n"
+#printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json\n"
+#printf "\n"
+#curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json
+#printf "\n"
+#printf "\n"
 
 ####################
 # API ROUTES: TODO #
