@@ -286,7 +286,7 @@ v1.get ([ "/directors/:director.json",
             // push a json key:value pair for each movie
             for (var i = 0; i < movies.length; i ++)
                 {
-                moviename = path.parse (movies [i]).name;  // Pulp_Fiction_1994
+                moviename = path.parse (movies [i]).name;               // ex: Pulp_Fiction_1994
 
                 movie_list.push ({ "moviename": moviename,              // ex: Pulp_Fiction_1994
                                    "moviejpg":  moviename + ".jpg",     // ex: Pulp_Fiction_1994.jpg
@@ -333,10 +333,45 @@ v1.get ([ "/directors/:director/movies.json",
     // ex: Quentin
     var director = request.params.director;
 
-    // mock data
-    var movies = [{ "name": "Get_Out" }, { "name": "Us" }];
+    // each folder is the name of a director
+    glob ("../static/directors/" + director + "/*.json", (err, movies) =>
+        {
+        var rc1;
+        var jsonOut;
+        var movie_list = [];
 
-    response.render ("movies.ejs", { "director": director, "movies": movies });
+        if (err)
+            {
+            rc = 1;
+            message = "ERROR: unable to glob() movies";
+            }
+        else
+            {
+            rc = 0;
+            message = "Movies found: " + movies.length;
+
+            // push a json key:value pair for each movie
+            for (var i = 0; i < movies.length; i ++)
+                {
+                moviename = path.parse (movies [i]).name;             // ex: Pulp_Fiction_1994
+
+                movie_list.push ({ "moviejson": moviename + ".json",  // ex: Pulp_Fiction_1994.json
+                                   "moviename": moviename});          // ex: Pulp_Fiction_1994
+                };
+            }
+
+        // {"error":null,"data":{"movies":
+        // [{"filename":"Reservoir_Dogs_1992.txt ","desc":"Reservoir Dogs"},
+        //  {"filename":"Pulp_Fiction_1994.txt ","desc":"Pulp Fiction"}]}}
+
+        // return json response
+        jsonOut = { "rc": rc, "message": message, "data": { "movies": movie_list }};
+        response.setHeader ("Content-Type", "application/json");
+        response.end (JSON.stringify (jsonOut));
+        });
+
+    // deprecated:
+    // response.render ("movies.ejs", { "director": director, "movies": movies });
     });
 
 /******************************************************************************/

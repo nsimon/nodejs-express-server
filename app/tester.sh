@@ -47,7 +47,7 @@ printf "\n"
 #printf "\n"
 #printf "\n"
 
-# TODO NEXT:
+## TODO NEXT:
 printf "curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json\n"
 printf "\n"
 curl --silent --request GET http://localhost:8080/v1/directors/Quentin/movies.json
