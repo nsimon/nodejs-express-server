@@ -80,13 +80,10 @@ restapi_gets ()
 restapi_puts ()
     {
     DIRECTORS_JSON="[{ "name": "McDonagh" }, { "name": "Peele" }, { "name": "Quentin" }, { "name": "Reitman" }, { "name": "Scorsese" }]"
-
     JSON_OUT="{ "rc": null, "message": null, "data": { "directors": $DIRECTORS_JSON }}"
-
     printf "DIRECTORS_JSON ... $DIRECTORS_JSON\n"
     printf "JSON_OUT ......... $JSON_OUT\n"
     printf "\n"
-
     printf "curl: PUT: /v1/directors.json\n"
     printf "\n"
     #curl --request PUT --header  'Content-Type: application/json' --data '$JSON_OUT' http://localhost:8080/v1/directors.json
@@ -146,8 +143,8 @@ main ()
     printf "tester.sh.\n"
     printf "\n"
 
-    browser_gets
-    restapi_gets
+    #browser_gets
+    #restapi_gets
     restapi_puts
 
     printf "Done.\n"
