@@ -7,7 +7,9 @@
 //   . /templates/:template_name
 //   . /content/:filename
 //
-// Standize rest api return codes (200 ok, etc.)
+// Conform the send and receive json fields
+//
+// Standardize rest api return codes (200 ok, etc.)
 //   . THIS IS HOW: response.status (200).send ({ result: result });
 //
 // directors.json:
