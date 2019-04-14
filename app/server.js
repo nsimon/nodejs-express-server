@@ -191,7 +191,7 @@ v1.get ([ "/pages/:page_name",
 
             if (typeof movie !== "undefined")
                 {
-                console.log ("We have a movie!");
+                // console.log ("We have a movie!");
                 }
 
             // if movie was specified, use "movie"
