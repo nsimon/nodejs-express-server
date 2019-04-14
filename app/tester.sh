@@ -25,7 +25,6 @@ browser_gets ()
     printf "\n"
     }
 
-
 restapi_gets ()
     {
     printf "curl: GET: /v1\n"
@@ -79,64 +78,81 @@ restapi_gets ()
 
 restapi_puts ()
     {
-    DIRECTORS_JSON="[{ \"name\": \"McDonagh\" }, { \"name\": \"Peele\" }, { \"name\": \"Quentin\" }, { \"name\": \"Reitman\" }, { \"name\": \"Scorsese\" }, { \"name\": \"Stokeley\" }]"
-    JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"directors\": $DIRECTORS_JSON }}"
+    #DIRECTORS_JSON="[{ \"name\": \"McDonagh\" }, { \"name\": \"Peele\" }, { \"name\": \"Quentin\" }, { \"name\": \"Reitman\" }, { \"name\": \"Scorsese\" }, { \"name\": \"Stokeley\" }]"
+    #JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"directors\": $DIRECTORS_JSON }}"
+    #printf "JSON_OUT ......... $JSON_OUT\n"
+    #printf "\n"
+    #printf "curl: PUT: /v1/directors.json\n"
+    #printf "\n"
+    #curl --request PUT --header  "Content-Type: application/json" --data "${JSON_OUT}" http://localhost:8080/v1/directors.json
+    #printf "\n"
+    #printf "\n"
+    #printf "***********************************************************************************\n"
+    #printf "\n"
+
+    // {"rc":0,"message":"",
+    //  "data":{"director_data":{"director":"Quentin",
+    //  "movies":[{"moviename":"Jackie_Brown_1997",
+    //             "moviejpg":"Jackie_Brown_1997.jpg",
+    //             "moviejson":"Jackie_Brown_1997.json"},
+    //            {"moviename":"Kill_Bill_V1_2003",
+    //             "moviejpg":"Kill_Bill_V1_2003.jpg",
+    //             "moviejson":"Kill_Bill_V1_2003.json"},
+    //            {"moviename":"Kill_Bill_V2_2004",
+    //             "moviejpg":"Kill_Bill_V2_2004.jpg",
+    //             "moviejson":"Kill_Bill_V2_2004.json"},
+    //            {"moviename":"Pulp_Fiction_1994",
+    //             "moviejpg":"Pulp_Fiction_1994.jpg",
+    //             "moviejson":"Pulp_Fiction_1994.json"},
+    //            {"moviename":"Reservoir_Dogs_1992",
+    //             "moviejpg":"Reservoir_Dogs_1992.jpg",
+    //             "moviejson":"Reservoir_Dogs_1992.json"}]}}}
+
+    JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"new_director\": \"Ephron\" }}"
     printf "JSON_OUT ......... $JSON_OUT\n"
     printf "\n"
-    printf "curl: PUT: /v1/directors.json\n"
+    printf "curl: PUT: /v1/directors/Ephron.json\n"
     printf "\n"
-    curl --request PUT --header  "Content-Type: application/json" --data "${JSON_OUT}" http://localhost:8080/v1/directors.json
+    curl --request PUT --header  "Content-Type: application/json" --data "${JSON_OUT}" http://localhost:8080/v1/Ephron.json
     printf "\n"
     printf "\n"
     printf "***********************************************************************************\n"
     printf "\n"
     }
 
-    
-#########
-## POST #
-#########
+restapi_posts ()
+    {
+    #printf "curl: POST: /v1/directors/Quentin.json
+    #printf "\n"
+    #curl --request POST --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin.json
+    #printf "\n"
+    #printf "\n"
 
-#printf "=====================================================================================================================================================\n"
-#printf "10. curl --request POST --header 'Content-Type: application/json' --data '{ \"newName\": \"Mr. Bojangles\" }' http://localhost:8080/v1/directors\n"
-#printf "=====================================================================================================================================================\n"
-#printf "\n"
-#curl --request POST --header 'Content-Type: application/json' --data '{ "newName": "Mr. Bojangles" }' http://localhost:8080/v1/directors
-#printf "\n"
-#printf "\n"
-#sleep 1
+    #printf "curl: POST: /v1/directors/Quentin/movies.json
+    #printf "\n"
+    #curl --request POST --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin/movies.json
+    #printf "\n"
+    printf "\n"
+    }
 
-#printf "==========================================================================================================================================================\n"
-#printf "11. curl --request POST --header 'Content-Type: application/json' --data '{ \"newName\": \"My Fair Lady\" }' http://localhost:8080/v1/directors/Peele\n"
-#printf "==========================================================================================================================================================\n"
-#printf "\n"
-#curl --request POST --header 'Content-Type: application/json' --data '{ "newMovie": "My Fair Lady" }' http://localhost:8080/v1/directors/Peele
-#printf "\n"
-#printf "\n"
-#sleep 1
+restapi_deletes ()
+    {
+    #printf "curl: DELETE: /v1/directors/Quentin.json
+    #printf "\n"
+    #curl --request DELETE --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin.json
+    #printf "\n"
+    #printf "\n"
+
+    #printf "curl: DELETE: /v1/directors/Quentin/movies.json
+    #printf "\n"
+    #curl --request DELETE --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin/movies.json
+    #printf "\n"
+    printf "\n"
+    }
 
 ###########
-## DELETE #
+# main () #
 ###########
-
-#printf "==================================================================================\n"
-#printf "12. curl --request DELETE http://localhost:8080/v1/directors/Peele/movies\n"
-#printf "==================================================================================\n"
-#printf "\n"
-#curl --request DELETE http://localhost:8080/v1/directors/Peele/movies
-#printf "\n"
-#printf "\n"
-#sleep 1
-
-#printf "=========================================================================================\n"
-#printf "14. curl --request DELETE http://localhost:8080/v1/directors/Peele/movie/Us_2019\n"
-#printf "=========================================================================================\n"
-#printf "\n"
-#curl --request DELETE http://localhost:8080/v1/directors/Peele/movie/Us_2019
-#printf "\n"
-#printf "\n"
-#sleep 1
-
 
 main ()
     {
@@ -144,8 +160,10 @@ main ()
     printf "\n"
 
     #browser_gets
-    #restapi_gets
-    restapi_puts
+    restapi_gets
+    #restapi_puts
+    #restapi_posts
+    #restapi_deletes
 
     printf "Done.\n"
     printf "\n"
