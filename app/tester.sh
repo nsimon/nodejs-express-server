@@ -78,11 +78,11 @@ restapi_gets ()
 
 restapi_puts ()
     {
+    #printf "curl: PUT: /v1/directors.json\n"
+    #printf "\n"
     #DIRECTORS_JSON="[{ \"name\": \"McDonagh\" }, { \"name\": \"Peele\" }, { \"name\": \"Quentin\" }, { \"name\": \"Reitman\" }, { \"name\": \"Scorsese\" }, { \"name\": \"Stokeley\" }]"
     #JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"directors\": $DIRECTORS_JSON }}"
     #printf "JSON_OUT ......... $JSON_OUT\n"
-    #printf "\n"
-    #printf "curl: PUT: /v1/directors.json\n"
     #printf "\n"
     #curl --request PUT --header  "Content-Type: application/json" --data "${JSON_OUT}" http://localhost:8080/v1/directors.json
     #printf "\n"
@@ -90,30 +90,26 @@ restapi_puts ()
     #printf "***********************************************************************************\n"
     #printf "\n"
 
-    // {"rc":0,"message":"",
-    //  "data":{"director_data":{"director":"Quentin",
-    //  "movies":[{"moviename":"Jackie_Brown_1997",
-    //             "moviejpg":"Jackie_Brown_1997.jpg",
-    //             "moviejson":"Jackie_Brown_1997.json"},
-    //            {"moviename":"Kill_Bill_V1_2003",
-    //             "moviejpg":"Kill_Bill_V1_2003.jpg",
-    //             "moviejson":"Kill_Bill_V1_2003.json"},
-    //            {"moviename":"Kill_Bill_V2_2004",
-    //             "moviejpg":"Kill_Bill_V2_2004.jpg",
-    //             "moviejson":"Kill_Bill_V2_2004.json"},
-    //            {"moviename":"Pulp_Fiction_1994",
-    //             "moviejpg":"Pulp_Fiction_1994.jpg",
-    //             "moviejson":"Pulp_Fiction_1994.json"},
-    //            {"moviename":"Reservoir_Dogs_1992",
-    //             "moviejpg":"Reservoir_Dogs_1992.jpg",
-    //             "moviejson":"Reservoir_Dogs_1992.json"}]}}}
-
-    JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"new_director\": \"Ephron\" }}"
+    printf "curl: PUT: /v1/directors/Landis.json\n"
+    printf "\n"
+    JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"director\": \"Landis\" }}"
     printf "JSON_OUT ......... $JSON_OUT\n"
     printf "\n"
-    printf "curl: PUT: /v1/directors/Ephron.json\n"
+    curl --request PUT --header  "Content-Type: application/json" --data "${JSON_OUT}" http://localhost:8080/v1/directors/Landis.json
     printf "\n"
-    curl --request PUT --header  "Content-Type: application/json" --data "${JSON_OUT}" http://localhost:8080/v1/Ephron.json
+    printf "\n"
+    printf "***********************************************************************************\n"
+    printf "\n"
+
+    printf "curl: PUT: /v1/directors/Landis/movies.json\n"
+    printf "\n"
+    MOVIE_JPG=animal_house_1978.jpg
+    MOVIE_JSON=animal_house_1978.json
+    curl --request PUT \
+         --header "Expect:" \
+         --form "moviejpg=@$MOVIE_JPG" \
+         --form "moviejson=@$MOVIE_JSON" \
+         http://localhost:8080/v1/directors/Landis/movies.json
     printf "\n"
     printf "\n"
     printf "***********************************************************************************\n"
@@ -160,8 +156,8 @@ main ()
     printf "\n"
 
     #browser_gets
-    restapi_gets
-    #restapi_puts
+    #restapi_gets
+    restapi_puts
     #restapi_posts
     #restapi_deletes
 

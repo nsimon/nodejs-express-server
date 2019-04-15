@@ -57,6 +57,7 @@ var async      = require ("async");
 var bodyParser = require ("body-parser");
 var express    = require ("express");
 var fs         = require ("fs");
+var formidable = require ("formidable");
 var glob       = require ("glob");
 var datetime   = require ("node-datetime");
 var path       = require ("path");
@@ -436,19 +437,113 @@ v1.put ("/directors.json", (request, response) =>
     response.status (rc).send (jsonOut);
     });
 
-// v1.put ("/directors/:director.json", (request, response) =>
-//     {
-//     // DESC:  Update existing movie for director
-//     // URL:   http://localhost:8080/v1/directors/Peele/Get_Out_2018
-//     // DATA:  updatedLength:120
-//     // ERROR: director does not exist
-//     // ERROR: movie does not exist
-//
-//     // ex: Peele
-//     var director = request.params.director;
-//
-//     response.status (200).send ({ result: result });
-//     });
+v1.put ("/directors/:director.json", (request, response) =>
+    {
+    // EX:      /v1/directors/Landis.json
+    // DESC:    creates a new director
+    // RETURNS: 200 ok
+
+    var director = request.body.data.director;
+    console.log ("director: " + director);
+
+    var directorFolder = "../static/directors/" + director;
+    console.log ("checking for directorFolder: " + directorFolder);
+
+    var rc;
+    var message;
+
+    if (fs.existsSync (directorFolder))
+        {
+        // skip
+        rc = 200;  // success
+        message = "director folder already exists: " + director;
+        }
+    else
+        {
+        console.log ("creating director folder: " + director);
+
+        // create director folder
+        fs.mkdirSync (directorFolder);
+
+        if (!fs.existsSync (directorFolder))
+            {
+            // error
+            rc = 500;  // error
+            message = "ERROR: failed to create director";
+            }
+        else
+            {
+            rc = 200;  // success
+            message = "director folder created: " + director;
+            }
+        }
+
+    var jsonOut = { "rc": rc, "message": message };
+
+    response.status (rc).send (jsonOut);
+    });
+
+v1.put ("/directors/:director/movies.json", (request, response) =>
+    {
+    // EX:      /v1/directors/Landis/movies.json
+    // DESC:    creates a new movie under director
+    // RETURNS: 200 ok
+
+    // ex: Quentin
+    var director = request.params.director;
+
+    var rc;
+    var message;
+
+    // ex: ../static/directors/Quentin
+    var directorFolder = "../static/directors/" + director;
+    console.log ("directorFolder: " + directorFolder);
+
+    // if director (folder) does not exist...
+    if (!fs.existsSync (directorFolder))
+        {
+        rc = 500;
+        message = "ERROR: director folder does not exist";
+        var jsonOut = { "rc": rc, "message": message };
+        response.status (rc).send (jsonOut);
+        }
+    else
+        {
+        var form = new formidable.IncomingForm ();
+
+        // appended for each movie created
+        var uploadedMovieFiles = [];
+
+        form.parse (request);
+
+        form.on ("fileBegin", (name, file) =>
+            {
+            file.path = directorFolder + "/" + file.name;
+            });
+
+        form.on ("file", (name, file) =>
+            {
+            console.log ("Uploaded file: " + file.path);
+            uploadedMovieFiles.push ({ "file": file.path });
+            });
+
+        form.on ("error", () =>
+            {
+            message = "ERROR: upload failed";
+            rc = 500;
+            var jsonOut = { "rc": rc, "message": message };
+            response.status (rc).send (jsonOut);
+            });
+
+        form.on ("end", () =>
+            {
+            message = "upload successful";
+            rc = 200;
+            var jsonOut = { "rc": rc, "message": message, "data": { "uploadedMovieFiles": uploadedMovieFiles }};
+            response.status (rc).send (jsonOut);
+            });
+        }
+    });
 
 /******************************************************************************/
 /* v1 api - POST                                                              */
