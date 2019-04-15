@@ -78,17 +78,17 @@ restapi_gets ()
 
 restapi_puts ()
     {
-    #printf "curl: PUT: /v1/directors.json\n"
-    #printf "\n"
-    #DIRECTORS_JSON="[{ \"name\": \"McDonagh\" }, { \"name\": \"Peele\" }, { \"name\": \"Quentin\" }, { \"name\": \"Reitman\" }, { \"name\": \"Scorsese\" }, { \"name\": \"Stokeley\" }]"
-    #JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"directors\": $DIRECTORS_JSON }}"
-    #printf "JSON_OUT ......... $JSON_OUT\n"
-    #printf "\n"
-    #curl --request PUT --header  "Content-Type: application/json" --data "${JSON_OUT}" http://localhost:8080/v1/directors.json
-    #printf "\n"
-    #printf "\n"
-    #printf "***********************************************************************************\n"
-    #printf "\n"
+    printf "curl: PUT: /v1/directors.json\n"
+    printf "\n"
+    DIRECTORS_JSON="[{ \"name\": \"McDonagh\" }, { \"name\": \"Peele\" }, { \"name\": \"Quentin\" }, { \"name\": \"Reitman\" }, { \"name\": \"Scorsese\" }, { \"name\": \"Stokeley\" }]"
+    JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"directors\": $DIRECTORS_JSON }}"
+    printf "JSON_OUT ......... $JSON_OUT\n"
+    printf "\n"
+    curl --request PUT --header  "Content-Type: application/json" --data "${JSON_OUT}" http://localhost:8080/v1/directors.json
+    printf "\n"
+    printf "\n"
+    printf "***********************************************************************************\n"
+    printf "\n"
 
     printf "curl: PUT: /v1/directors/Landis.json\n"
     printf "\n"
@@ -118,31 +118,35 @@ restapi_puts ()
 
 restapi_posts ()
     {
-    #printf "curl: POST: /v1/directors/Quentin.json
-    #printf "\n"
-    #curl --request POST --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin.json
-    #printf "\n"
-    #printf "\n"
+    # Updates Quentin and his movies
+    printf "curl: POST: /v1/directors/Quentin.json\n"
+    printf "\n"
+    curl --request POST --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin.json
+    printf "\n"
+    printf "\n"
 
-    #printf "curl: POST: /v1/directors/Quentin/movies.json
-    #printf "\n"
-    #curl --request POST --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin/movies.json
-    #printf "\n"
+    # Updates movies for Quentin
+    printf "curl: POST: /v1/directors/Quentin/movies.json\n"
+    printf "\n"
+    curl --request POST --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin/movies.json
+    printf "\n"
     printf "\n"
     }
 
 restapi_deletes ()
     {
-    #printf "curl: DELETE: /v1/directors/Quentin.json
-    #printf "\n"
-    #curl --request DELETE --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin.json
-    #printf "\n"
-    #printf "\n"
+    # Deletes Quentin
+    printf "curl: DELETE: /v1/directors/Quentin.json\n"
+    printf "\n"
+    curl --request DELETE --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin.json
+    printf "\n"
+    printf "\n"
 
-    #printf "curl: DELETE: /v1/directors/Quentin/movies.json
-    #printf "\n"
-    #curl --request DELETE --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin/movies.json
-    #printf "\n"
+    # Deletes movies under Quentin
+    printf "curl: DELETE: /v1/directors/Quentin/movies.json\n"
+    printf "\n"
+    curl --request DELETE --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin/movies.json
+    printf "\n"
     printf "\n"
     }
 
@@ -157,9 +161,9 @@ main ()
 
     #browser_gets
     #restapi_gets
-    restapi_puts
-    #restapi_posts
-    #restapi_deletes
+    #restapi_puts
+    restapi_posts
+    restapi_deletes
 
     printf "Done.\n"
     printf "\n"

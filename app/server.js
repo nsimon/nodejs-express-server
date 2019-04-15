@@ -549,84 +549,70 @@ v1.put ("/directors/:director/movies.json", (request, response) =>
 /* v1 api - POST                                                              */
 /******************************************************************************/
 
-v1.post ("/directors", (request, response) =>
+v1.post ("/directors/:director.json", (request, response) =>
     {
-    // DESC:  create new director
-    // URL:   http://localhost:8080/v1/directors
-    // DATA:  newName:"new name"
-    // ERROR: director already exists
+    // EX:   /v1/directors/Quentin.json
+    // DESC: updates Quentin and his movies
 
-    // ex: Mr. Bojangles
-    var newName = request.body.newName;
-
-    var result = "new director added: " + newName;
-
-    response.status (201).send ({ result: result });
-    });
-
-v1.post ("/directors/:director", (request, response) =>
-    {
-    // DESC:  create new movie for director
-    // URL:   http://localhost:8080/v1/directors/Peele/Get_Out_2018
-    // DATA:  newMovie:"new movie"
-    // ERROR: director does not exist
-    // ERROR: movie already exists
-
-    // ex: Peele
+    // ex: Quentin
     var director = request.params.director;
 
-    // ex: My Fair Lady
-    var newMovie = request.body.newMovie;
+    var rc = 404;  // error
+    var rc = 201;  // ok
+    var result = "director updated: " + director;
 
-    var result = "new movie added: " + newMovie;
+    response.status (rc).send ({ result: result });
+    });
 
-    response.status (201).send ({ result: result });
+v1.post ("/directors/:director/movies.json", (request, response) =>
+    {
+    // EX:   /v1/directors/Quentin/movies.json
+    // DESC: updates movies for Quentin
+
+    // ex: Quentin
+    var director = request.params.director;
+
+    var rc = 404;  // error
+    var rc = 201;  // ok
+    var result = "director movies updated: " + director;
+
+    response.status (rc).send ({ result: result });
     });
 
 /******************************************************************************/
 /* v1 api - DELETE                                                            */
 /******************************************************************************/
 
-v1.delete ("/directors/:director/movies", (request, response) =>
+v1.delete ("/directors/:director.json", (request, response) =>
     {
-    // Delete all movies by director:
-    //   . DELETE /v1/directors/Peele/movies
-    //   . ERROR: director does not exist
-    //   . NOTE: no "request.body.*" for this request
-    //
-    // if (err)  response.status (404).send ();
-    // else      response.status (200).send ();
+    // EX:   /v1/directors/Quentin.json
+    // DESC: deletes Quentin
 
-    // ex: Peele
+    // ex: Quentin
     var director = request.params.director;
 
-    // Set return message
-    var message = "deleted all movies for director";
+    var rc = 404;  // error
+    var rc = 200;  // ok
+    var result = "director deleted: " + director;
 
     // Send client response
-    response.status (200).send ({ result: 0, message: message });
+    response.status (rc).send ({ result: result });
     });
 
-v1.delete ("/directors/:director/movie/:movie", (request, response) =>
+v1.delete ("/directors/:director/movies.json", (request, response) =>
     {
-    // Delete specified movie by this director:
-    //   . DELETE /v1/directors/Peele/movie/Us_2019
-    //   . ERROR: movie does not exist
-    //   . NOTE: no "request.body.*" for this request
-    // if (err)  response.status (404).send ();
-    // else      response.status (200).send ();
+    // EX:   /v1/directors/Quentin/movies.json
+    // DESC: deletes movies under Quentin
 
-    // ex: Peele
+    // ex: Quentin
     var director = request.params.director;
 
-    // ex: Us_2019
-    var movie = request.params.movie;
-
-    // Set return message
-    var message = "successfully deleted movie";
+    var rc = 404;  // error
+    var rc = 200;  // ok
+    var result = "movies deleted for director: " + director;
 
     // Send client response
-    response.status (200).send ({ result: 0, message: message, director: director, movie: movie });
+    response.status (rc).send ({ result: result });
     });
 
 /******************************************************************************/
