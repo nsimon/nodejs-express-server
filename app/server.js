@@ -7,19 +7,9 @@
 //   . /templates/:template_name
 //   . /content/:filename
 //
-// Conform the send and receive json fields
+// Conform all tx and rx json keys/values
 //
-// Standardize rest api return codes (200 ok, etc.)
-//   . THIS IS HOW: response.status (200).send ({ result: result });
-//
-// directors.json:
-//   . add, change, delete
-//
-// movies.json:
-//   . add, change, delete
-//
-// ejs:
-//   . only renders on server
+// Standardize all rest api return codes (200 ok, etc.)
 //
 // Add this route to handle invalid urls:
 //   v1.get ("*", four_oh_four);
@@ -28,17 +18,6 @@
 //       response.writeHead (404, { "Content-Type" : "application/json" });
 //       response.end (JSON.stringify (helpers.invalid_resource ()) + "\n");
 //       }
-
-// Working:
-//   . .json/.xml routes
-//   . /v1 /v2 api separation
-//   . Log to file
-//   . CLI script that runs/tests all REST commands
-//   . images
-//   . /pages/home
-//   . /pages/director/:director
-//   . /pages/director/:director/:movie
-//   . 
 
 // Supported HTTP status return codes:
 //   . 200 OK           Request successful
