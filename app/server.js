@@ -468,13 +468,13 @@ v1.put ("/directors/:director/movies.json", (request, response) =>
     // DESC:    creates a new movie under director
     // RETURNS: 200 ok
 
-    // ex: Quentin
+    // ex: Landis
     var director = request.params.director;
 
     var rc;
     var message;
 
-    // ex: ../static/directors/Quentin
+    // ex: ../static/directors/Landis
     var directorFolder = "../static/directors/" + director;
     console.log ("directorFolder: " + directorFolder);
 
@@ -488,24 +488,29 @@ v1.put ("/directors/:director/movies.json", (request, response) =>
         }
     else
         {
+        // create a new formidable object
         var form = new formidable.IncomingForm ();
 
         // appended for each movie created
         var uploadedMovieFiles = [];
 
+        // parse the incoming form
         form.parse (request);
 
+        // the fileBegin event happens when each file upload begins
         form.on ("fileBegin", (name, file) =>
             {
             file.path = directorFolder + "/" + file.name;
             });
 
+        // the file event happens when each ile completes it's upload
         form.on ("file", (name, file) =>
             {
             console.log ("Uploaded file: " + file.path);
             uploadedMovieFiles.push ({ "file": file.path });
             });
 
+        // the error event
         form.on ("error", () =>
             {
             message = "ERROR: upload failed";
@@ -514,6 +519,7 @@ v1.put ("/directors/:director/movies.json", (request, response) =>
             response.status (rc).send (jsonOut);
             });
 
+        // the end event happens when all uploads are completed
         form.on ("end", () =>
             {
             message = "upload successful";
