@@ -603,16 +603,65 @@ v1.post ("/directors/:director/movies.json", (request, response) =>
 v1.post ("/directors/:director.json", (request, response) =>
     {
     // EX:   /v1/directors/Quentin.json
-    // DESC: updates Quentin
+    // DESC: change director name
 
     // ex: Quentin
     var director = request.params.director;
 
-    var rc = 404;  // error
-    var rc = 201;  // ok
-    var result = "director movies updated: " + director;
+    var oldDirectorName = request.body.oldDirectorName;
+    var newDirectorName = request.body.newDirectorName;
 
-    response.status (rc).send ({ result: result });
+    console.log ("oldDirectorName: " + oldDirectorName);
+    console.log ("newDirectorName: " + newDirectorName);
+    console.log ("");
+
+    var oldDirectorFolder = __dirname + "/../static/directors/" + oldDirectorName;
+    var newDirectorFolder = __dirname + "/../static/directors/" + newDirectorName;
+
+    console.log ("oldDirectorFolder: " + oldDirectorFolder);
+    console.log ("newDirectorFolder: " + newDirectorFolder);
+    console.log ("");
+
+    var rest_rc;
+    var message;
+    var jsonOut;
+
+    if (!fs.existsSync (oldDirectorFolder))
+        {
+        rest_rc = 500;
+        message = "ERROR: oldDirectorFolder does not exist: " + oldDirectorFolder;
+        jsonOut = { "rest_rc": rest_rc, "message": message };
+        response.status (rest_rc).send (jsonOut);
+        }
+    else if (fs.existsSync (newDirectorFolder))
+        {
+        rest_rc = 500;
+        message = "ERROR: newDirectorFolder already exists: " + newDirectorFolder;
+        jsonOut = { "rest_rc": rest_rc, "message": message };
+        response.status (rest_rc).send (jsonOut);
+        }
+    else
+        {
+        fs.rename (oldDirectorFolder, newDirectorFolder, (err) =>
+            {
+            if (err)
+                {
+                // return json error
+                rest_rc = 500;
+                message = "ERROR: unable to rename director folder";
+                jsonOut = { "rest_rc": rest_rc, "err": err, "message": message };
+                response.status (rest_rc).send (jsonOut);
+                }
+            else
+                {
+                // rename was successful
+                rest_rc = 200;
+                message = "director successfully renamed to " + newDirectorName;
+                jsonOut = { "rest_rc": rest_rc, "oldDirectorName": oldDirectorName, "newDirectorName": newDirectorName, "message": message };
+                response.status (rest_rc).send (jsonOut);
+                }
+            });
+        }
     });
 
 /******************************************************************************/
