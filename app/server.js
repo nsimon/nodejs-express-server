@@ -506,7 +506,7 @@ v1.put ("/directors/:director/movies.json", (request, response) =>
         // the file event happens when each ile completes it's upload
         form.on ("file", (name, file) =>
             {
-            console.log ("Uploaded file: " + file.path);
+            console.log ("uploaded file to: " + file.path);
             uploadedMovieFiles.push ({ "file": file.path });
             });
 
@@ -522,6 +522,7 @@ v1.put ("/directors/:director/movies.json", (request, response) =>
         // the end event happens when all uploads are completed
         form.on ("end", () =>
             {
+            console.log ("");
             message = "upload successful";
             rc = 200;
             var jsonOut = { "rc": rc, "message": message, "data": { "uploadedMovieFiles": uploadedMovieFiles }};
@@ -534,25 +535,75 @@ v1.put ("/directors/:director/movies.json", (request, response) =>
 /* v1 api - POST                                                              */
 /******************************************************************************/
 
-v1.post ("/directors/:director.json", (request, response) =>
-    {
-    // EX:   /v1/directors/Quentin.json
-    // DESC: updates Quentin and his movies
-
-    // ex: Quentin
-    var director = request.params.director;
-
-    var rc = 404;  // error
-    var rc = 201;  // ok
-    var result = "director updated: " + director;
-
-    response.status (rc).send ({ result: result });
-    });
-
 v1.post ("/directors/:director/movies.json", (request, response) =>
     {
     // EX:   /v1/directors/Quentin/movies.json
     // DESC: updates movies for Quentin
+
+    // ex: Quentin
+    var director = request.params.director;
+
+    var directorFolder = "../static/directors/" + director;
+    console.log ("directorFolder: " + directorFolder);
+    console.log ("");
+
+    // if director (folder) does not exist...
+    if (!fs.existsSync (directorFolder))
+        {
+        rc = 500;
+        message = "ERROR: director folder does not exist";
+        var jsonOut = { "rc": rc, "message": message };
+        response.status (rc).send (jsonOut);
+        }
+    else
+        {
+        // create a new formidable object
+        var form = new formidable.IncomingForm ();
+
+        // appended for each movie created
+        var uploadedMovieFiles = [];
+
+        // parse the incoming form
+        form.parse (request);
+
+        // the fileBegin event happens when each file upload begins
+        form.on ("fileBegin", (name, file) =>
+            {
+            file.path = directorFolder + "/" + file.name;
+            });
+
+        // the file event happens when each ile completes it's upload
+        form.on ("file", (name, file) =>
+            {
+            console.log ("uploaded file to: " + file.path);
+            uploadedMovieFiles.push ({ "file": file.path });
+            });
+
+        // the error event
+        form.on ("error", () =>
+            {
+            message = "ERROR: upload failed";
+            rc = 500;
+            var jsonOut = { "rc": rc, "message": message };
+            response.status (rc).send (jsonOut);
+            });
+
+        // the end event happens when all uploads are completed
+        form.on ("end", () =>
+            {
+            console.log ("");
+            message = "upload successful";
+            rc = 200;
+            var jsonOut = { "rc": rc, "message": message, "data": { "uploadedMovieFiles": uploadedMovieFiles }};
+            response.status (rc).send (jsonOut);
+            });
+        }
+    });
+
+v1.post ("/directors/:director.json", (request, response) =>
+    {
+    // EX:   /v1/directors/Quentin.json
+    // DESC: updates Quentin
 
     // ex: Quentin
     var director = request.params.director;

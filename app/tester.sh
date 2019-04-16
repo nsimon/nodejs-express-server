@@ -101,14 +101,12 @@ restapi_puts ()
     printf "***********************************************************************************\n"
     printf "\n"
 
+    # Add new movie for Landis
     printf "curl: PUT: /v1/directors/Landis/movies.json\n"
     printf "\n"
-    MOVIE_JPG=animal_house_1978.jpg
-    MOVIE_JSON=animal_house_1978.json
     curl --request PUT \
          --header "Expect:" \
-         --form "moviejpg=@$MOVIE_JPG" \
-         --form "moviejson=@$MOVIE_JSON" \
+         --form "moviejpg=@movies_to_upload/Landis/animal_house_1978.jpg"  --form "moviejson=@movies_to_upload/Landis/animal_house_1978.json" \
          http://localhost:8080/v1/directors/Landis/movies.json
     printf "\n"
     printf "\n"
@@ -118,34 +116,46 @@ restapi_puts ()
 
 restapi_posts ()
     {
-    # Updates Quentin and his movies
-    printf "curl: POST: /v1/directors/Quentin.json\n"
+    # Update existing movies for Quentin
+    printf "curl: POST: /v1/directors/Quentin/movies.json\n"
     printf "\n"
-    curl --request POST --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin.json
+    curl --request POST \
+         --header "Expect:" \
+         --form "moviejpg=@movies_to_upload/Quentin/Jackie_Brown_1997.jpg"   --form "moviejson=@movies_to_upload/Quentin/Jackie_Brown_1997.json" \
+         --form "moviejpg=@movies_to_upload/Quentin/Kill_Bill_V1_2003.jpg"   --form "moviejson=@movies_to_upload/Quentin/Kill_Bill_V1_2003.json" \
+         --form "moviejpg=@movies_to_upload/Quentin/Kill_Bill_V2_2004.jpg"   --form "moviejson=@movies_to_upload/Quentin/Kill_Bill_V2_2004.json" \
+         --form "moviejpg=@movies_to_upload/Quentin/Pulp_Fiction_1994.jpg"   --form "moviejson=@movies_to_upload/Quentin/Pulp_Fiction_1994.json" \
+         --form "moviejpg=@movies_to_upload/Quentin/Reservoir_Dogs_1992.jpg" --form "moviejson=@movies_to_upload/Quentin/Reservoir_Dogs_1992.json" \
+         http://localhost:8080/v1/directors/Quentin/movies.json
     printf "\n"
     printf "\n"
 
-    # Updates movies for Quentin
-    printf "curl: POST: /v1/directors/Quentin/movies.json\n"
+    # TODO next
+    # Update Quentin
+    POST_JSON=""
+    printf "curl: POST: /v1/directors/Quentin.json\n"
     printf "\n"
-    curl --request POST --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin/movies.json
+    curl --request POST \
+         --header 'Content-Type: application/json' \
+         --data "${POST_JSON}" \
+         http://localhost:8080/v1/directors/Quentin.json
     printf "\n"
     printf "\n"
     }
 
 restapi_deletes ()
     {
-    # Deletes Quentin
-    printf "curl: DELETE: /v1/directors/Quentin.json\n"
+    # Deletes Landis
+    printf "curl: DELETE: /v1/directors/Landis.json\n"
     printf "\n"
-    curl --request DELETE --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin.json
+    curl --request DELETE --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Landis.json
     printf "\n"
     printf "\n"
 
-    # Deletes movies under Quentin
-    printf "curl: DELETE: /v1/directors/Quentin/movies.json\n"
+    # Deletes movies under Landis
+    printf "curl: DELETE: /v1/directors/Landis/movies.json\n"
     printf "\n"
-    curl --request DELETE --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Quentin/movies.json
+    curl --request DELETE --header 'Content-Type: application/json' --data "${JSON_OUT}" http://localhost:8080/v1/directors/Landis/movies.json
     printf "\n"
     printf "\n"
     }
@@ -163,7 +173,7 @@ main ()
     #restapi_gets
     #restapi_puts
     restapi_posts
-    restapi_deletes
+    #restapi_deletes
 
     printf "Done.\n"
     printf "\n"
