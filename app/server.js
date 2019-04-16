@@ -377,12 +377,13 @@ v1.put ("/directors.json", (request, response) =>
         if (fs.existsSync (directorFolder))
             {
             // skip
-            //console.log ("directorFolder exists: " + directorFolder);
+            console.log ("directorFolder exists: " + directorFolder);
             }
         else
             {
             // create director (folder)
-            //console.log ("creating directorFolder: " + directorFolder);
+            console.log ("creating directorFolder: " + directorFolder);
+
             fs.mkdirSync (directorFolder);
 
             if (!fs.existsSync (directorFolder))
@@ -670,18 +671,62 @@ v1.post ("/directors/:director.json", (request, response) =>
 
 v1.delete ("/directors/:director.json", (request, response) =>
     {
-    // EX:   /v1/directors/Quentin.json
-    // DESC: deletes Quentin
+    // EX:   /v1/directors/Landis.json
+    // DESC: delete Landis and all his movies
 
-    // ex: Quentin
+    // ex: Landis
     var director = request.params.director;
+    console.log ("director: " + director);
 
-    var rc = 404;  // error
-    var rc = 200;  // ok
-    var result = "director deleted: " + director;
+    var directorFolder = "../static/directors/" + director;
+    console.log ("directorFolder: " + directorFolder);
 
-    // Send client response
-    response.status (rc).send ({ result: result });
+    var rest_rc;
+    var message;
+    var jsonOut;
+
+    if (!fs.existsSync (directorFolder))
+        {
+        rest_rc = 500;
+        message = "ERROR: directorFolder does not exist: " + directorFolder;
+        jsonOut = { "rest_rc": rest_rc, "message": message };
+        response.status (rest_rc).send (jsonOut);
+        }
+    else
+        {
+        // get all movie files under director
+        glob (directorFolder + "/*.*", (err, files) =>
+            {
+            var moviefiles = [];
+
+            if (err)
+                {
+                rest_rc = 500;
+                message = "unable to read moviefiles";
+                jsonOut = { "rest_rc": rest_rc, "message": message };
+                response.status (rest_rc).send (jsonOut);
+                }
+            else
+                {
+                for (var i = 0; i < files.length; i++)
+                    {
+                    moviefiles.push (files [i]);
+
+                    fs.unlinkSync (files [i]);
+                    console.log ("successful file unlink: " + files [i]);
+                    }
+
+                fs.rmdirSync (directorFolder);
+                console.log ("successful folder unlink: " + directorFolder);
+
+                // return json response
+                rest_rc = 200;
+                message = "successfully removed director and their files";
+                jsonOut = { "rc": rest_rc, "message": message, "moviefiles": moviefiles };
+                response.status (rest_rc).send (jsonOut);
+                }
+            });
+        }
     });
 
 v1.delete ("/directors/:director/movies.json", (request, response) =>
