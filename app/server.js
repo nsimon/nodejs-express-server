@@ -679,6 +679,71 @@ v1.post ("/directors/:director.json", (request, response) =>
         }
     });
 
+v1.post ("/directors/:director/:movie.json", (request, response) =>
+    {
+    // EX:   /v1/directors/Landis/animal_house_1978.json
+    // DESC: change movie name
+
+    // ex: Landis
+    var director = request.params.director;
+    console.log ("director: .......... " + director);
+
+    // ex: animal_house_1978
+    var oldMovieName = request.params.movie;
+    console.log ("oldMovieName ....... " + oldMovieName);
+
+    // ex: "../static/directors/Landis"
+    var directorFolder = "../static/directors/" + director;
+    console.log ("directorFolder ..... " + directorFolder);
+
+    // ex: animal_houzz
+    var newMovieName = request.body.newMovieName;
+    console.log ("newMovieName ....... " + newMovieName);
+
+    // create oldPath, newPath
+
+    // ex: ../static/directors/Landis/animal_house_1978.json
+    var oldMoviejsonPath = directorFolder + "/" + oldMovieName + ".json";
+    var newMoviejsonPath = directorFolder + "/" + newMovieName + ".json";
+    console.log ("oldMoviejsonPath ... " + oldMoviejsonPath);
+    console.log ("newMoviejsonPath ... " + newMoviejsonPath);
+
+    // ex: ../static/directors/Landis/animal_house_1978.jpg
+    var oldMoviejpgPath  = directorFolder + "/" + oldMovieName + ".jpg";
+    var newMoviejpgPath  = directorFolder + "/" + newMovieName + ".jpg";
+    console.log ("oldMoviejpgPath .... " + oldMoviejpgPath);
+    console.log ("newMoviejpgPath .... " + newMoviejpgPath);
+
+    // rename json
+    fs.renameSync (oldMoviejsonPath, newMoviejsonPath);
+
+    // if newMoviejsonPath does not exist (e.g. "../static/director/Landis/animal_houzz.json")...
+    if (!fs.existsSync (newMoviejsonPath))
+        {
+        var message = "ERROR: newMoviejsonPath was not created: " + newMoviejsonPath;
+        console.log (message);
+        response.status (404).send ({ "rc": 404, "message": message });
+        }
+    else
+        {
+        // rename jpg
+        fs.renameSync (oldMoviejpgPath, newMoviejpgPath);
+
+        if (!fs.existsSync (newMoviejpgPath))
+            {
+            var message = "ERROR: newMoviejpgPath was not created: " + newMoviejpgPath;
+            console.log (message);
+            response.status (404).send ({ "rc": 404, "message": message });
+            }
+        else
+            {
+            var message = "successfully renamed movie to: " + newMovieName;
+            console.log (message);
+            response.status (200).send ({ "rc": 200, "message": message });
+            }
+        }
+    });
+
 /******************************************************************************/
 /* v1 api - DELETE                                                            */
 /******************************************************************************/

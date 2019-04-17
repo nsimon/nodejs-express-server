@@ -112,7 +112,10 @@ put_create_all_directors ()
     JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"directors\": $DIRECTORS_JSON }}"
     printf "JSON_OUT ......... $JSON_OUT\n"
     printf "\n"
-    curl --request PUT --header  "Content-Type: application/json" --data "${JSON_OUT}" http://localhost:8080/v1/directors.json
+    curl --request PUT \
+         --header  "Content-Type: application/json" \
+         --data "$JSON_OUT" \
+         http://localhost:8080/v1/directors.json
     printf "\n"
     printf "\n"
     }
@@ -130,7 +133,10 @@ put_create_one_director ()
     JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"director\": \"Landis\" }}"
     printf "JSON_OUT ......... $JSON_OUT\n"
     printf "\n"
-    curl --request PUT --header  "Content-Type: application/json" --data "${JSON_OUT}" http://localhost:8080/v1/directors/Landis.json
+    curl --request PUT 
+         --header  "Content-Type: application/json" \
+         --data "$JSON_OUT" \
+         http://localhost:8080/v1/directors/Landis.json
     printf "\n"
     printf "\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
@@ -176,6 +182,7 @@ post_update_movies_for_a_director ()
          --form "moviejpg=@movies_to_upload/Quentin/Reservoir_Dogs_1992.jpg" --form "moviejson=@movies_to_upload/Quentin/Reservoir_Dogs_1992.json" \
          http://localhost:8080/v1/directors/Quentin/movies.json
     printf "\n"
+    ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Quentin/*.* 2>&1
     printf "\n"
     }
 
@@ -188,11 +195,11 @@ post_change_director_name_to_Peale ()
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
     printf "\n"
     printf "curl: POST: /v1/directors/Peele.json\n"
-    POST_JSON="{ \"oldDirectorName\": \"Peele\", \"newDirectorName\": \"Peale\" }"
+    JSON_OUT="{ \"oldDirectorName\": \"Peele\", \"newDirectorName\": \"Peale\" }"
     printf "\n"
     curl --request POST \
          --header 'Content-Type: application/json' \
-         --data "${POST_JSON}" \
+         --data "$JSON_OUT" \
          http://localhost:8080/v1/directors/Peele.json
     printf "\n"
     printf "\n"
@@ -209,15 +216,36 @@ post_change_director_name_to_Peele ()
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
     printf "\n"
     printf "curl: POST: /v1/directors/Peale.json\n"
-    POST_JSON="{ \"oldDirectorName\": \"Peale\", \"newDirectorName\": \"Peele\" }"
+    JSON_OUT="{ \"oldDirectorName\": \"Peale\", \"newDirectorName\": \"Peele\" }"
     printf "\n"
     curl --request POST \
          --header 'Content-Type: application/json' \
-         --data "${POST_JSON}" \
+         --data "$JSON_OUT" \
          http://localhost:8080/v1/directors/Peale.json
     printf "\n"
     printf "\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
+    printf "\n"
+    }
+
+post_change_movie_name ()
+    {
+    printf "=================\n"
+    printf "Change movie name\n"
+    printf "=================\n"
+    printf "\n"
+    ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Landis/*.* 2>&1
+    printf "\n"
+    printf "curl: POST: /v1/directors/Landis/animal_house_1978.json\n"
+    JSON_OUT="{ \"newMovieName\": \"animal_houzz_1978\" }"
+    printf "\n"
+    curl --request POST \
+         --header 'Content-Type: application/json' \
+         --data "$JSON_OUT" \
+         http://localhost:8080/v1/directors/Landis/animal_house_1978.json
+    printf "\n"
+    printf "\n"
+    ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Landis/*.* 2>&1
     printf "\n"
     }
 
@@ -284,9 +312,10 @@ main ()
     #post_update_movies_for_a_director
     #post_change_director_name_to_Peale
     #post_change_director_name_to_Peele
+    post_change_movie_name
 
     #delete_director_and_their_movies
-    delete_one_movie
+    #delete_one_movie
 
     printf "====\n"
     printf "Done\n"
