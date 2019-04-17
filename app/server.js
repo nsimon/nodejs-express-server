@@ -1,39 +1,7 @@
 // Module ... server.js
 // Desc ..... Nodejs/express reference REST api
 
-// TODO
-//
-// 1. Cleanup
-//    - Standardize all REST json
-//    - rc/rest_rc continuity
-// 2. Separate all curl calls into individual functions
-//    - then, group them for various tests
-// 3. Make sure everything works well -- just as-is
-// 4. Print new lists:
-//    - The "requirements" 1-10
-//    - The "table"
-//    - Misc items below the "table"
-// 5. Check-off all completed tasks
-// 6. Make a plan for the remaining items
-
-
-// Add support for remaining browser URLs:
-//   . /templates/:template_name
-//   . /content/:filename
-//
-// Conform all tx and rx json keys/values
-//
-// Standardize all rest api return codes (200 ok, etc.)
-//
-// Add this route to handle invalid urls:
-//   v1.get ("*", four_oh_four);
-//   function four_oh_four (request, response)
-//       {
-//       response.writeHead (404, { "Content-Type" : "application/json" });
-//       response.end (JSON.stringify (helpers.invalid_resource ()) + "\n");
-//       }
-
-// Supported HTTP status return codes:
+// HTTP status return codes:
 //   . 200 OK           Request successful
 //   . 201 OK           Resource created successfully
 //   . 204 OK           Resource deleted successfully  // response.status (204).send (data);
@@ -362,6 +330,16 @@ v1.get ([ "/directors/:director/movies.json",
         response.setHeader ("Content-Type", "application/json");
         response.end (JSON.stringify (jsonOut));
         });
+    });
+
+v1.get ("*", (request, response) =>
+    {
+    // This is the 404 case
+    //   . The inbound GET did not match any of the above get() routes
+    var rc = 404;
+    var message = "page not found";
+    console.log (message);
+    response.status (rc).send ({ "rc": rc, "message": message });
     });
 
 /******************************************************************************/
