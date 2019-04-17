@@ -32,7 +32,7 @@ var helpers    = require ("./handlers/helpers.js");
 
 // false: do not log to logfile
 // true:  log to logfile
-var logToFile = false;
+var logToFile = true;
 var logfile   = "./_server.log";
 
 if (logToFile)
