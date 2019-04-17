@@ -3,6 +3,20 @@
 
 // TODO
 //
+// 1. Cleanup
+//    - Standardize all REST json
+//    - rc/rest_rc continuity
+// 2. Separate all curl calls into individual functions
+//    - then, group them for various tests
+// 3. Make sure everything works well -- just as-is
+// 4. Print new lists:
+//    - The "requirements" 1-10
+//    - The "table"
+//    - Misc items below the "table"
+// 5. Check-off all completed tasks
+// 6. Make a plan for the remaining items
+
+
 // Add support for remaining browser URLs:
 //   . /templates/:template_name
 //   . /content/:filename
@@ -205,7 +219,7 @@ v1.get ([ "/directors.json",
     {
     // EX:      /directors.json
     //          /directors.json?directors_from=New_York_City
-    // DESC:    get all directors (with optional filters)
+    // DESC:    get all directors
     // RETURNS: json
 
     // each folder is the name of a director
@@ -243,7 +257,7 @@ v1.get ([ "/directors/:director.json",
           "/directors/:director.xml" ], (request, response) =>
     {
     // EX:      /directors/Quentin.json
-    // DESC:    get director and his movies
+    // DESC:    get director and their movies
     // RETURNS: json
 
     // ex: Quentin
@@ -289,7 +303,7 @@ v1.get ([ "/directors/:director/movies/:movie.json",
           "/directors/:director/movies/:movie.xml" ], (request, response) =>
     {
     // EX:      /directors/Quentin/movies/Pulp_Fiction_1994.json
-    // DESC:    get specified movie for director
+    // DESC:    get one movie by a director
     // RETURNS: json
 
     // ex: Quentin
@@ -311,7 +325,7 @@ v1.get ([ "/directors/:director/movies.json",
           "/directors/:director/movies.xml" ], (request, response) =>
     {
     // EX:    /directors/Quentin/movies.json
-    // DESC:  get all movies for director
+    // DESC:  get all movies by a director
 
     // ex: Quentin
     var director = request.params.director;
@@ -357,7 +371,7 @@ v1.get ([ "/directors/:director/movies.json",
 v1.put ("/directors.json", (request, response) =>
     {
     // EX:      /v1/directors.json
-    // DESC:    creates the directors from the data (body must contain data for ALL directors)
+    // DESC:    creates all directors from the data (body must contain data for ALL directors)
     // RETURNS: 200 ok
 
     var mkdirFailed = 0;  // reset to 1 on failure
@@ -420,7 +434,7 @@ v1.put ("/directors.json", (request, response) =>
 v1.put ("/directors/:director.json", (request, response) =>
     {
     // EX:      /v1/directors/Landis.json
-    // DESC:    creates a new director
+    // DESC:    creates one director
     // RETURNS: 200 ok
 
     var director = request.body.data.director;
@@ -466,7 +480,7 @@ v1.put ("/directors/:director.json", (request, response) =>
 v1.put ("/directors/:director/movies.json", (request, response) =>
     {
     // EX:      /v1/directors/Landis/movies.json
-    // DESC:    creates a new movie under director
+    // DESC:    creates movie for director
     // RETURNS: 200 ok
 
     // ex: Landis
@@ -539,7 +553,7 @@ v1.put ("/directors/:director/movies.json", (request, response) =>
 v1.post ("/directors/:director/movies.json", (request, response) =>
     {
     // EX:   /v1/directors/Quentin/movies.json
-    // DESC: updates movies for Quentin
+    // DESC: updates movies for a director
 
     // ex: Quentin
     var director = request.params.director;
@@ -731,18 +745,69 @@ v1.delete ("/directors/:director.json", (request, response) =>
 
 v1.delete ("/directors/:director/movies.json", (request, response) =>
     {
-    // EX:   /v1/directors/Quentin/movies.json
-    // DESC: deletes movies under Quentin
+    // EX:   /v1/directors/Landis/movies.json
+    // DESC: deletes movies under Landis
 
-    // ex: Quentin
+    // ex: Landis
     var director = request.params.director;
+    console.log ("director: " + director);
 
-    var rc = 404;  // error
-    var rc = 200;  // ok
-    var result = "movies deleted for director: " + director;
+    // ex: ../static/directors/Landis
+    var directorFolder = "../static/directors/" + director;
+    console.log ("directorFolder: " + directorFolder);
 
-    // Send client response
-    response.status (rc).send ({ result: result });
+    var moviename     = request.body.moviename;                      // ex: animal_house_1978
+    var moviejsonPath = directorFolder + "/" + moviename + ".json";  // ex: ../static/directors/Landis/animal_house_1978.json
+    var moviejpgPath  = directorFolder + "/" + moviename + ".jpg";   // ex: ../static/directors/Landis/animal_house_1978.jpg
+    console.log ("moviename:     " + moviename);
+    console.log ("moviejsonPath: " + moviejsonPath);
+    console.log ("moviejpgPath:  " + moviejpgPath);
+
+    // if director does not exist (e.g. "../static/director/Landis")...
+    if (!fs.existsSync (directorFolder))
+        {
+        var message = "director folder does not exist";
+        console.log (message);
+        response.status (404).send ({ "rc": 404, "message": message });
+        }
+
+    // if movie does not exist (e.g. "../static/director/Landis/animal_house.json")...
+    else if (!fs.existsSync (moviejsonPath))
+        {
+        var message = "moviejsonPath does not exist: " + moviejsonPath;
+        console.log (message);
+        response.status (404).send ({ "rc": 404, "message": message });
+        }
+    else
+        {
+        // delete the movie
+        fs.unlinkSync (moviejsonPath);
+
+        if (fs.existsSync (moviejsonPath))
+            {
+            var message = "unable to delete moviejsonPath: " + moviejsonPath;
+            console.log (message);
+            response.status (404).send ({ "rc": 404, "message": message });
+            }
+        else
+            {
+            fs.unlinkSync (moviejpgPath);
+
+            if (fs.existsSync (moviejpgPath))
+                {
+                var message = "unable to delete moviejpgPath: " + moviejpgPath;
+                console.log (message);
+                response.status (404).send ({ "rc": 404, "message": message });
+                }
+            else
+                {
+                //var rc = 204;   // should use 204 (DELETE successful), but that doesn't return json message
+                var message = "successfully deleted movie: " + moviename;
+                console.log (message);
+                response.status (200).send ({ "rc": 200, "message": message });
+                }
+            }
+        }
     });
 
 /******************************************************************************/
