@@ -74,19 +74,6 @@ get_one_director_and_their_movies ()
     printf "\n"
     }
 
-get_one_movie_by_a_director ()
-    {
-    printf "===========================\n"
-    printf "Get one movie by a director\n"
-    printf "===========================\n"
-    printf "\n"
-    printf "curl: GET: /v1/directors/Quentin/movies/Pulp_Fiction_1994.json\n"
-    printf "\n"
-    curl --request GET http://localhost:8080/v1/directors/Quentin/movies/Pulp_Fiction_1994.json
-    printf "\n"
-    printf "\n"
-    }
-
 get_all_movies_by_a_director ()
     {
     printf "============================\n"
@@ -96,6 +83,19 @@ get_all_movies_by_a_director ()
     printf "curl: GET: /v1/directors/Quentin/movies.json\n"
     printf "\n"
     curl --request GET http://localhost:8080/v1/directors/Quentin/movies.json
+    printf "\n"
+    printf "\n"
+    }
+
+get_one_movie_by_a_director ()
+    {
+    printf "===========================\n"
+    printf "Get one movie by a director\n"
+    printf "===========================\n"
+    printf "\n"
+    printf "curl: GET: /v1/directors/Quentin/movies/Pulp_Fiction_1994.json\n"
+    printf "\n"
+    curl --request GET http://localhost:8080/v1/directors/Quentin/movies/Pulp_Fiction_1994.json
     printf "\n"
     printf "\n"
     }
@@ -126,19 +126,19 @@ put_create_one_director ()
     printf "Creating a new director\n"
     printf "=======================\n"
     printf "\n"
+    printf "/static/directors/ BEFORE:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
     printf "\n"
     printf "curl: PUT: /v1/directors/Landis.json\n"
     printf "\n"
     JSON_OUT="{ \"rc\": null, \"message\": null, \"data\": { \"director\": \"Landis\" }}"
-    printf "JSON_OUT ......... $JSON_OUT\n"
-    printf "\n"
-    curl --request PUT 
+    curl --request PUT \
          --header  "Content-Type: application/json" \
          --data "$JSON_OUT" \
          http://localhost:8080/v1/directors/Landis.json
     printf "\n"
     printf "\n"
+    printf "/static/directors/ AFTER:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
     printf "\n"
     }
@@ -149,6 +149,7 @@ put_create_movie_for_director ()
     printf "Creating movie for a director\n"
     printf "=============================\n"
     printf "\n"
+    printf "/static/directors/Landis/ BEFORE:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Landis/*.* 2>&1
     printf "\n"
     printf "curl: PUT: /v1/directors/Landis/movies.json\n"
@@ -159,6 +160,7 @@ put_create_movie_for_director ()
          http://localhost:8080/v1/directors/Landis/movies.json
     printf "\n"
     printf "\n"
+    printf "/static/directors/Landis/ AFTER:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Landis/*.* 2>&1
     printf "\n"
     }
@@ -169,6 +171,7 @@ post_update_movies_for_a_director ()
     printf "Updating movies for a director\n"
     printf "==============================\n"
     printf "\n"
+    printf "/static/directors/Quentin/ BEFORE:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Quentin/*.* 2>&1
     printf "\n"
     printf "curl: POST: /v1/directors/Quentin/movies.json\n"
@@ -182,6 +185,8 @@ post_update_movies_for_a_director ()
          --form "moviejpg=@movies_to_upload/Quentin/Reservoir_Dogs_1992.jpg" --form "moviejson=@movies_to_upload/Quentin/Reservoir_Dogs_1992.json" \
          http://localhost:8080/v1/directors/Quentin/movies.json
     printf "\n"
+    printf "\n"
+    printf "/static/directors/Quentin/ AFTER:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Quentin/*.* 2>&1
     printf "\n"
     }
@@ -192,6 +197,7 @@ post_change_director_name_to_Peale ()
     printf "Changing director name to Peale\n"
     printf "===============================\n"
     printf "\n"
+    printf "/static/directors/ BEFORE:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
     printf "\n"
     printf "curl: POST: /v1/directors/Peele.json\n"
@@ -203,6 +209,7 @@ post_change_director_name_to_Peale ()
          http://localhost:8080/v1/directors/Peele.json
     printf "\n"
     printf "\n"
+    printf "/static/directors/ AFTER:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
     printf "\n"
     }
@@ -213,6 +220,7 @@ post_change_director_name_to_Peele ()
     printf "Changing director name to Peele\n"
     printf "===============================\n"
     printf "\n"
+    printf "/static/directors/ BEFORE:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
     printf "\n"
     printf "curl: POST: /v1/directors/Peale.json\n"
@@ -224,6 +232,7 @@ post_change_director_name_to_Peele ()
          http://localhost:8080/v1/directors/Peale.json
     printf "\n"
     printf "\n"
+    printf "/static/directors/ AFTER:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
     printf "\n"
     }
@@ -234,6 +243,7 @@ post_change_movie_name ()
     printf "Change movie name\n"
     printf "=================\n"
     printf "\n"
+    printf "/static/directors/Landis BEFORE:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Landis/*.* 2>&1
     printf "\n"
     printf "curl: POST: /v1/directors/Landis/animal_house_1978.json\n"
@@ -245,6 +255,7 @@ post_change_movie_name ()
          http://localhost:8080/v1/directors/Landis/animal_house_1978.json
     printf "\n"
     printf "\n"
+    printf "/static/directors/Landis AFTER:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Landis/*.* 2>&1
     printf "\n"
     }
@@ -255,6 +266,7 @@ delete_director_and_their_movies ()
     printf "Deleting a director and all of their movies\n"
     printf "===========================================\n"
     printf "\n"
+    printf "/static/directors/Landis BEFORE:\n"
     ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Landis/*.* 2>&1
     printf "\n"
     printf "curl: DELETE: /v1/directors/Landis.json\n"
@@ -266,7 +278,8 @@ delete_director_and_their_movies ()
          http://localhost:8080/v1/directors/Landis.json
     printf "\n"
     printf "\n"
-    ls -l ~/cwb206/week10/nodejs-express-server/static/directors/Landis/*.* 2>&1
+    printf "/static/directors/Landis AFTER:\n"
+    ls -l ~/cwb206/week10/nodejs-express-server/static/directors 2>&1
     printf "\n"
     }
 
@@ -296,26 +309,27 @@ main ()
     printf "tester.sh.\n"
     printf "\n"
 
-    #browser_gets
+    browser_gets
 
     #get_home_page_v1
     #get_home_page_v2
-    #get_all_directors
-    #get_one_director_and_their_movies
-    #get_one_movie_by_a_director
-    #get_all_movies_by_a_director
+
+    get_all_directors
+    get_one_director_and_their_movies
+    get_all_movies_by_a_director
+    get_one_movie_by_a_director
 
     ##put_create_all_directors
     put_create_one_director                # Landis
     put_create_movie_for_director          # animal_house_1978
 
-    #post_update_movies_for_a_director
-    #post_change_director_name_to_Peale
-    #post_change_director_name_to_Peele
+    post_update_movies_for_a_director
     post_change_movie_name
+    post_change_director_name_to_Peale
+    post_change_director_name_to_Peele
 
-    #delete_director_and_their_movies
-    #delete_one_movie
+    delete_director_and_their_movies
+    delete_one_movie
 
     printf "====\n"
     printf "Done\n"

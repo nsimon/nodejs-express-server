@@ -811,7 +811,7 @@ v1.delete ("/directors/:director.json", (request, response) =>
 v1.delete ("/directors/:director/movies.json", (request, response) =>
     {
     // EX:   /v1/directors/Landis/movies.json
-    // DESC: deletes movies under Landis
+    // DESC: deletes movie under Landis
 
     // ex: Landis
     var director = request.params.director;
@@ -828,10 +828,12 @@ v1.delete ("/directors/:director/movies.json", (request, response) =>
     console.log ("moviejsonPath: " + moviejsonPath);
     console.log ("moviejpgPath:  " + moviejpgPath);
 
+    // {"rc":404,"message":"director folder does not exist"}
+
     // if director does not exist (e.g. "../static/director/Landis")...
     if (!fs.existsSync (directorFolder))
         {
-        var message = "director folder does not exist";
+        var message = "director folder does not exist: " + directorFolder;
         console.log (message);
         response.status (404).send ({ "rc": 404, "message": message });
         }
